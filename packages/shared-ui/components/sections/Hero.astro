@@ -1,0 +1,80 @@
+---
+import type { SiteMeta } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  meta: SiteMeta;
+  headline: string;
+  subhead: string;
+  image: string;
+  imageAlt?: string;
+  primaryCta?: { href: string; label: string };
+  secondaryCta?: { href: string; label: string };
+}
+
+const {
+  meta,
+  headline,
+  subhead,
+  image,
+  imageAlt = '',
+  primaryCta = { href: '#quote', label: 'Get a free quote' },
+  secondaryCta,
+} = Astro.props;
+---
+
+<section class="hero section">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow">{meta.areaServed[0] ?? 'Local pros'}</span>
+      <h1>{headline}</h1>
+      <p class="hero__sub">{subhead}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--accent btn--lg" href={primaryCta.href}>{primaryCta.label}</a>
+        <a class="btn btn--ghost btn--lg" href={`tel:${meta.phoneE164}`}>Call {meta.phone}</a>
+        {secondaryCta && (
+          <a class="btn btn--ghost btn--lg" href={secondaryCta.href}>{secondaryCta.label}</a>
+        )}
+      </div>
+      <ul class="hero__trust">
+        {meta.yearsInBusiness && <li>✅ {meta.yearsInBusiness}+ years in business</li>}
+        <li>✅ Licensed &amp; insured</li>
+        <li>✅ Free, no-pressure quotes</li>
+      </ul>
+    </div>
+    <div class="hero__media">
+      <img src={image} alt={imageAlt} width="960" height="720" loading="eager" fetchpriority="high" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(2.5rem, 6vw, 5rem); }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .hero__sub { font-size: var(--fs-md); color: var(--color-muted); margin-top: 1rem; max-width: 52ch; }
+  .hero__ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; }
+  .hero__trust {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    list-style: none;
+    padding: 0;
+    color: var(--color-muted);
+    font-size: var(--fs-sm);
+  }
+  .hero__media img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  @media (min-width: 880px) {
+    .hero__grid { grid-template-columns: 1.05fr 1fr; }
+  }
+</style>

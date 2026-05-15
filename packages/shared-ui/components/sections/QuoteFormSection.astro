@@ -1,0 +1,62 @@
+---
+import type { Service } from '@store-front/shared-ui/lib/types';
+import QuoteWizard from '@store-front/shared-ui/islands/QuoteWizard';
+
+interface Props {
+  title?: string;
+  intro?: string;
+  services: Service[];
+}
+
+const { title = 'Get your free quote in minutes', intro, services } = Astro.props;
+---
+
+<section id="quote" class="section section--surface">
+  <div class="container quote__layout">
+    <header class="quote__header">
+      <span class="eyebrow">Free quote</span>
+      <h2>{title}</h2>
+      {intro && <p class="quote__intro">{intro}</p>}
+      <ul class="quote__benefits">
+        <li>📷 Upload photos of the area — we’ll review before quoting</li>
+        <li>📍 Address validation in real time</li>
+        <li>💡 Instant ballpark estimate</li>
+        <li>📄 PDF quote emailed to you immediately</li>
+      </ul>
+    </header>
+
+    <div class="quote__wizard">
+      <QuoteWizard client:visible services={services} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .quote__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .quote__intro { color: var(--color-muted); margin-top: 0.5rem; }
+  .quote__benefits {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--color-fg);
+    font-size: var(--fs-sm);
+  }
+  .quote__wizard {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: var(--shadow);
+    min-height: 360px;
+  }
+  @media (min-width: 880px) {
+    .quote__layout { grid-template-columns: 0.9fr 1.1fr; }
+  }
+</style>

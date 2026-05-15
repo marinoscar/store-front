@@ -1,0 +1,42 @@
+---
+import type { CrewPhoto } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  title?: string;
+  intro?: string;
+  photos: CrewPhoto[];
+}
+
+const { title = 'Meet the crew', intro, photos } = Astro.props;
+---
+
+<section id="crew" class="section">
+  <div class="container">
+    <span class="eyebrow">The team</span>
+    <h2>{title}</h2>
+    {intro && <p class="crew__intro">{intro}</p>}
+
+    <div class="crew__grid grid">
+      {photos.map((p) => (
+        <figure class="crew__item">
+          <img src={p.src} alt={p.alt} loading="lazy" width="400" height="500" />
+          {(p.name || p.role) && (
+            <figcaption>
+              {p.name && <strong>{p.name}</strong>}
+              {p.role && <small>{p.role}</small>}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .crew__intro { color: var(--color-muted); margin-top: 0.5rem; max-width: 60ch; }
+  .crew__grid { margin-top: 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+  .crew__item { display: flex; flex-direction: column; gap: 0.5rem; }
+  .crew__item img { aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+  figcaption { display: flex; flex-direction: column; gap: 0.125rem; }
+  figcaption small { color: var(--color-muted); }
+</style>

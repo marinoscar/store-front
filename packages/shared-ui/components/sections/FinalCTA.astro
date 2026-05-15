@@ -1,0 +1,51 @@
+---
+import type { SiteMeta } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  meta: SiteMeta;
+  headline?: string;
+  subhead?: string;
+}
+
+const {
+  meta,
+  headline = 'Ready to get started?',
+  subhead = 'Get a free, no-pressure quote in minutes — or call us right now.',
+} = Astro.props;
+---
+
+<section class="final-cta section">
+  <div class="container final-cta__inner">
+    <h2>{headline}</h2>
+    <p>{subhead}</p>
+    <div class="final-cta__buttons">
+      <a class="btn btn--accent btn--lg" href="#quote">Get my free quote</a>
+      <a class="btn btn--ghost btn--lg final-cta__phone" href={`tel:${meta.phoneE164}`}>Call {meta.phone}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+    text-align: center;
+  }
+  .final-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .final-cta h2 { color: var(--color-primary-fg); }
+  .final-cta p { color: color-mix(in oklab, var(--color-primary-fg) 80%, transparent); max-width: 50ch; }
+  .final-cta__buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 0.75rem; }
+  .final-cta__phone {
+    background: transparent;
+    color: var(--color-primary-fg);
+    border-color: color-mix(in oklab, var(--color-primary-fg) 40%, transparent);
+  }
+  .final-cta__phone:hover {
+    background: color-mix(in oklab, var(--color-primary-fg) 12%, transparent);
+  }
+</style>

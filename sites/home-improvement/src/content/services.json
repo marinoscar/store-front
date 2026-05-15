@@ -1,0 +1,26 @@
+[
+  {
+    "id": "interior-paint",
+    "name": "Interior painting",
+    "shortDescription": "Crisp, even finishes with low-VOC paints.",
+    "description": "Professional interior painting using premium, low-VOC paints. We handle prep, repairs, and clean-up so your home is ready to enjoy the same day.",
+    "image": "/images/services/interior-paint.jpg",
+    "highlights": ["Premium low-VOC paint", "Furniture protection", "Same-day cleanup"]
+  },
+  {
+    "id": "deck-rebuild",
+    "name": "Deck rebuild & repair",
+    "shortDescription": "From boards to railings — built to last.",
+    "description": "We rebuild and repair wooden and composite decks. Structural assessment, hardware replacement, sealing, and finishing — all included.",
+    "image": "/images/services/deck-rebuild.jpg",
+    "highlights": ["Composite or hardwood", "Structural inspection", "Stain & seal"]
+  },
+  {
+    "id": "flooring",
+    "name": "Flooring installation",
+    "shortDescription": "Tile, laminate, hardwood — installed cleanly.",
+    "description": "Full-room flooring installations and replacements. We handle subfloor prep, transitions, and trim so the finished surface is level and seamless.",
+    "image": "/images/services/flooring.jpg",
+    "highlights": ["Tile, laminate, hardwood", "Subfloor leveling", "Trim & transitions"]
+  }
+]

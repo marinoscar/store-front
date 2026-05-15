@@ -1,0 +1,25 @@
+{
+  "name": "store-front",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Multi-site landing-page monorepo: shared UI + self-hosted backend (OpenAI chatbot, S3 uploads, PDF quotes).",
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "dev:hi": "pnpm --filter home-improvement dev",
+    "dev:pw": "pnpm --filter pressure-washing dev",
+    "dev:api": "pnpm --filter api dev",
+    "format": "prettier --write \"**/*.{ts,tsx,astro,md,json,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,astro,md,json,css}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

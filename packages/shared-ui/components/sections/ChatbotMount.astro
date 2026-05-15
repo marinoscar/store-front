@@ -1,0 +1,13 @@
+---
+import Chatbot from '@store-front/shared-ui/islands/Chatbot';
+import type { SiteMeta, FaqItem } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  meta: SiteMeta;
+  faq?: FaqItem[];
+}
+
+const { meta, faq = [] } = Astro.props;
+---
+
+<Chatbot client:idle brandName={meta.brandName} starterFaqs={faq.slice(0, 4).map((f) => f.q)} />

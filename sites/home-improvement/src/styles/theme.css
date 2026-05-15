@@ -1,0 +1,12 @@
+/* Home-improvement theme: confident blue + warm orange accent. */
+:root {
+  --color-primary: #1d4ed8;
+  --color-primary-hover: #1e40af;
+  --color-primary-fg: #ffffff;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-accent-fg: #ffffff;
+
+  --font-display: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}

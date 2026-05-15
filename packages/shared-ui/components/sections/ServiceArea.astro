@@ -1,0 +1,43 @@
+---
+import type { SiteMeta } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  meta: SiteMeta;
+  title?: string;
+}
+
+const { meta, title = 'Where we work' } = Astro.props;
+---
+
+<section id="service-area" class="section">
+  <div class="container service-area__layout">
+    <div>
+      <span class="eyebrow">Service area</span>
+      <h2>{title}</h2>
+      <p class="service-area__lead">
+        We proudly serve {meta.areaServed.length} {meta.areaServed.length === 1 ? 'city' : 'cities'} across the area.
+        Not sure if we cover you? Use our quote wizard — it’ll check your address.
+      </p>
+    </div>
+
+    <ul class="service-area__list">
+      {meta.areaServed.map((city) => (
+        <li>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>{city}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .service-area__layout { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
+  .service-area__lead { color: var(--color-muted); margin-top: 0.5rem; }
+  .service-area__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem 1rem; }
+  .service-area__list li { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+  .service-area__list svg { color: var(--color-primary); }
+  @media (min-width: 880px) {
+    .service-area__layout { grid-template-columns: 1fr 1.4fr; gap: 3rem; }
+  }
+</style>

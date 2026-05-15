@@ -1,0 +1,30 @@
+[
+  {
+    "q": "Do you offer free quotes?",
+    "a": "Yes — every quote is free and there's no obligation to book. Use the quote wizard on this page or call us; we'll typically reply within one business day."
+  },
+  {
+    "q": "Are you licensed and insured?",
+    "a": "Yes. We're a fully licensed contractor and carry liability insurance up to $2M, plus workers' compensation. Documentation is available on request."
+  },
+  {
+    "q": "How long does a typical project take?",
+    "a": "It depends on scope. A single-room repaint is usually 1–2 days, a deck rebuild 3–5 days, and flooring varies by area. The quote will include a written timeline."
+  },
+  {
+    "q": "Do I need to be home during the work?",
+    "a": "Not necessarily. Many of our customers give us a key or smart-lock code. We send a daily progress update with photos either way."
+  },
+  {
+    "q": "What's your payment schedule?",
+    "a": "Typically: small deposit on signing, milestone payment at midpoint, final payment on completion and walk-through. We accept bank transfer and credit cards."
+  },
+  {
+    "q": "What if I'm not happy with the work?",
+    "a": "We won't consider the job done until you've walked through and signed off. If there's an issue after, we come back and fix it — covered by our workmanship warranty."
+  },
+  {
+    "q": "Do you handle permits?",
+    "a": "When permits are required for the scope (structural changes, major electrical), we handle the application and inspection scheduling and roll the cost into the quote."
+  }
+]

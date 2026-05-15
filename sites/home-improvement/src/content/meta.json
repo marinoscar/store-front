@@ -1,0 +1,33 @@
+{
+  "brandName": "Acme Home Improvement",
+  "tagline": "Renovations done right, on time, and on budget.",
+  "description": "Acme Home Improvement is a licensed and insured remodeling contractor serving the Greater San José area. Free quotes, transparent pricing, and a 100% satisfaction guarantee.",
+  "phone": "(555) 010-0100",
+  "phoneE164": "+15550100100",
+  "email": "hello@acmehi.example",
+  "address": {
+    "street": "Calle 1, Avenida 2",
+    "city": "San José",
+    "region": "San José",
+    "postal": "10101",
+    "country": "CR",
+    "lat": 9.9333,
+    "lng": -84.0833
+  },
+  "areaServed": [
+    "San José",
+    "Escazú",
+    "Santa Ana",
+    "Curridabat",
+    "Alajuela",
+    "Heredia"
+  ],
+  "siteUrl": "https://myhomeimprovementcompany.com",
+  "ogImage": "/images/og-image.jpg",
+  "socials": {
+    "facebook": "https://facebook.com/acmehi",
+    "instagram": "https://instagram.com/acmehi"
+  },
+  "yearsInBusiness": 12,
+  "certifications": ["Licensed contractor", "Insured up to $2M"]
+}

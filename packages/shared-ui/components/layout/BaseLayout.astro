@@ -1,0 +1,83 @@
+---
+import type { SiteMeta, Service, Review, FaqItem } from '@store-front/shared-ui/lib/types';
+import { buildPageSeo, type PageSeo } from '@store-front/shared-ui/lib/seo';
+import {
+  localBusinessSchema,
+  faqPageSchema,
+  servicesSchema,
+} from '@store-front/shared-ui/lib/schema';
+
+interface Props {
+  meta: SiteMeta;
+  services?: Service[];
+  reviews?: Review[];
+  faq?: FaqItem[];
+  seo?: Partial<PageSeo>;
+}
+
+const { meta, services, reviews, faq, seo } = Astro.props;
+const page = buildPageSeo(meta, seo);
+
+const localBusinessJson = JSON.stringify(localBusinessSchema(meta, reviews));
+const servicesJson = services && services.length ? JSON.stringify(servicesSchema(services, meta)) : null;
+const faqJson = faq && faq.length ? JSON.stringify(faqPageSchema(faq)) : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="var(--color-primary)" />
+    <title>{page.title}</title>
+    <meta name="description" content={page.description} />
+    <link rel="canonical" href={page.canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={meta.brandName} />
+    <meta property="og:title" content={page.title} />
+    <meta property="og:description" content={page.description} />
+    <meta property="og:url" content={page.canonical} />
+    {page.ogImage && <meta property="og:image" content={new URL(page.ogImage, meta.siteUrl).toString()} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={page.title} />
+    <meta name="twitter:description" content={page.description} />
+    {page.ogImage && <meta name="twitter:image" content={new URL(page.ogImage, meta.siteUrl).toString()} />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <script type="application/ld+json" set:html={localBusinessJson}></script>
+    {servicesJson && <script type="application/ld+json" set:html={servicesJson}></script>}
+    {faqJson && <script type="application/ld+json" set:html={faqJson}></script>}
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <slot name="header" />
+    <main id="main"><slot /></main>
+    <slot name="footer" />
+    <slot name="overlays" />
+  </body>
+</html>
+
+<style is:global>
+  @import '@store-front/shared-ui/styles/reset.css';
+  @import '@store-front/shared-ui/styles/tokens.css';
+  @import '@store-front/shared-ui/styles/base.css';
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+    padding: 0.5rem 1rem;
+    z-index: 100;
+    transition: top var(--motion-fast);
+  }
+  .skip-link:focus {
+    top: 0;
+  }
+</style>

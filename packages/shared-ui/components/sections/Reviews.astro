@@ -1,0 +1,48 @@
+---
+import type { Review } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  title?: string;
+  reviews: Review[];
+}
+
+const { title = 'What our customers say', reviews } = Astro.props;
+const avg = reviews.length
+  ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
+  : null;
+---
+
+<section id="reviews" class="section">
+  <div class="container">
+    <span class="eyebrow">Reviews</span>
+    <h2>{title}</h2>
+    {avg && <p class="reviews__avg">★ {avg} average from {reviews.length} reviews</p>}
+
+    <div class="reviews__grid grid grid--3">
+      {reviews.map((r) => (
+        <blockquote class="review card">
+          <div class="review__stars" aria-label={`${r.rating} out of 5`}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span aria-hidden="true">{i < r.rating ? '★' : '☆'}</span>
+            ))}
+          </div>
+          <p>“{r.text}”</p>
+          <footer class="review__footer">
+            <cite>— {r.author}</cite>
+            {r.location && <small>{r.location}</small>}
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews__avg { color: var(--color-muted); margin-top: 0.5rem; }
+  .reviews__grid { margin-top: 2rem; }
+  .review { display: flex; flex-direction: column; gap: 0.75rem; }
+  .review__stars { color: var(--color-accent); letter-spacing: 0.125em; }
+  .review p { font-size: var(--fs-md); }
+  .review__footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: auto; color: var(--color-muted); font-size: var(--fs-sm); }
+  .review cite { font-style: normal; font-weight: 600; color: var(--color-fg); }
+</style>

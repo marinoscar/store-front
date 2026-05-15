@@ -1,0 +1,59 @@
+---
+import type { SiteMeta } from '@store-front/shared-ui/lib/types';
+interface Props { meta: SiteMeta; }
+const { meta } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <strong class="site-footer__brand">{meta.brandName}</strong>
+      <p class="site-footer__tagline">{meta.tagline}</p>
+    </div>
+    <div class="site-footer__col">
+      <h4>Contact</h4>
+      <a href={`tel:${meta.phoneE164}`}>{meta.phone}</a>
+      <a href={`mailto:${meta.email}`}>{meta.email}</a>
+    </div>
+    <div class="site-footer__col">
+      <h4>Service area</h4>
+      <p>{meta.areaServed.join(' · ')}</p>
+    </div>
+    {meta.socials && (
+      <div class="site-footer__col">
+        <h4>Follow</h4>
+        <div class="site-footer__socials">
+          {meta.socials.facebook && <a href={meta.socials.facebook} rel="noopener" target="_blank">Facebook</a>}
+          {meta.socials.instagram && <a href={meta.socials.instagram} rel="noopener" target="_blank">Instagram</a>}
+          {meta.socials.twitter && <a href={meta.socials.twitter} rel="noopener" target="_blank">Twitter</a>}
+        </div>
+      </div>
+    )}
+  </div>
+  <div class="container site-footer__legal">
+    <small>© {year} {meta.brandName}. All rights reserved.</small>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+    padding-block: 3rem 1.5rem;
+    margin-top: var(--gap-section);
+  }
+  .site-footer a { transition: opacity var(--motion-fast); }
+  .site-footer a:hover { opacity: 0.8; }
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 2rem;
+  }
+  .site-footer__brand { font-family: var(--font-display); font-size: var(--fs-lg); }
+  .site-footer__tagline { opacity: 0.85; margin-top: 0.5rem; }
+  .site-footer__col h4 { margin-bottom: 0.5rem; font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+  .site-footer__col a { display: block; line-height: 1.8; }
+  .site-footer__socials { display: flex; gap: 1rem; }
+  .site-footer__legal { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.15); opacity: 0.7; }
+</style>

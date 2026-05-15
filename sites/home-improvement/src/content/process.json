@@ -1,0 +1,26 @@
+[
+  {
+    "step": 1,
+    "title": "Tell us about your project",
+    "description": "Use the quote wizard or give us a call. Share photos of the area — it helps us estimate accurately.",
+    "icon": "📋"
+  },
+  {
+    "step": 2,
+    "title": "Get a detailed PDF quote",
+    "description": "We email you a written quote with scope, materials, timeline, and price — typically within 24 hours.",
+    "icon": "📄"
+  },
+  {
+    "step": 3,
+    "title": "We do the work",
+    "description": "Our licensed crew shows up on time, every day, with daily progress updates and photos.",
+    "icon": "🔨"
+  },
+  {
+    "step": 4,
+    "title": "Walk through and sign off",
+    "description": "We don't consider the job done until you've inspected the work and signed off. Backed by our workmanship warranty.",
+    "icon": "✅"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "brandName": "BlueWave Pressure Washing",
+  "tagline": "Driveways, decks, and houses — like new again.",
+  "description": "BlueWave is a licensed pressure-washing company serving the Central Valley. Residential and commercial exterior cleaning, soft washing, and roof treatment. Free quotes, photo proof, no chemicals on plants.",
+  "phone": "(555) 010-0200",
+  "phoneE164": "+15550100200",
+  "email": "hello@bluewavepw.example",
+  "address": {
+    "street": "Avenida Central",
+    "city": "San José",
+    "region": "San José",
+    "postal": "10102",
+    "country": "CR",
+    "lat": 9.9333,
+    "lng": -84.0833
+  },
+  "areaServed": [
+    "San José",
+    "Escazú",
+    "Santa Ana",
+    "Heredia",
+    "Alajuela",
+    "Cartago"
+  ],
+  "siteUrl": "https://mypressurewashingcompany.com",
+  "ogImage": "/images/og-image.jpg",
+  "socials": {
+    "facebook": "https://facebook.com/bluewavepw",
+    "instagram": "https://instagram.com/bluewavepw"
+  },
+  "yearsInBusiness": 6,
+  "certifications": ["Licensed & insured", "Eco-safe detergents"]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "step": 1,
+    "title": "Send us photos",
+    "description": "Use our quote wizard to upload a few photos of the area. Helps us bring the right equipment.",
+    "icon": "📷"
+  },
+  {
+    "step": 2,
+    "title": "Get a same-day quote",
+    "description": "We respond within hours with a PDF quote including everything — no hidden fees.",
+    "icon": "📄"
+  },
+  {
+    "step": 3,
+    "title": "We clean (you don't need to be home)",
+    "description": "Just leave us a water spigot. We protect plants, work cleanly, and finish in a single visit.",
+    "icon": "💦"
+  },
+  {
+    "step": 4,
+    "title": "Before & after photos",
+    "description": "You get a photo report so you know exactly what changed — and a 30-day satisfaction guarantee.",
+    "icon": "✨"
+  }
+]

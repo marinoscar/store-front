@@ -141,3 +141,20 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Astro
+.astro/
+
+# Deploy-time config & secrets (must live only on the VPS / be provided per-environment)
+deploy/.env
+deploy/sites.config.json
+
+# Per-package build/cache directories
+**/dist/
+**/.tsbuildinfo
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

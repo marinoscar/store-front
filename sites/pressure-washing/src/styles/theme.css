@@ -1,0 +1,12 @@
+/* Pressure-washing theme: deep teal + sunlight amber accent. */
+:root {
+  --color-primary: #0e7490;
+  --color-primary-hover: #155e75;
+  --color-primary-fg: #ffffff;
+  --color-accent: #fbbf24;
+  --color-accent-hover: #f59e0b;
+  --color-accent-fg: #111827;
+
+  --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}

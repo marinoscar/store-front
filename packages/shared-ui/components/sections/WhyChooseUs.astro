@@ -1,0 +1,47 @@
+---
+interface Reason {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title?: string;
+  reasons: Reason[];
+}
+
+const { title = 'Why choose us', reasons } = Astro.props;
+---
+
+<section id="why-us" class="section section--surface">
+  <div class="container">
+    <span class="eyebrow">Why choose us</span>
+    <h2>{title}</h2>
+
+    <div class="why__grid grid grid--3">
+      {reasons.map((r) => (
+        <div class="why__item card">
+          <div class="why__icon" aria-hidden="true">{r.icon ?? '★'}</div>
+          <h3>{r.title}</h3>
+          <p>{r.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why__grid { margin-top: 2rem; }
+  .why__item { display: flex; flex-direction: column; gap: 0.5rem; }
+  .why__icon {
+    width: 48px; height: 48px;
+    display: grid; place-items: center;
+    background: color-mix(in oklab, var(--color-accent) 22%, transparent);
+    color: var(--color-accent);
+    border-radius: 12px;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+  }
+  .why__item h3 { font-size: var(--fs-md); }
+  .why__item p { color: var(--color-muted); font-size: var(--fs-sm); }
+</style>

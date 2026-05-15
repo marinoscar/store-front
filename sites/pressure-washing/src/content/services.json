@@ -1,0 +1,26 @@
+[
+  {
+    "id": "driveway-wash",
+    "name": "Driveways & sidewalks",
+    "shortDescription": "Strip years of grime, oil, and moss in one visit.",
+    "description": "High-pressure cleaning for concrete, pavers, and asphalt. Removes oil stains, tire marks, moss, and biological growth. Surfaces look freshly poured.",
+    "image": "/images/services/driveway.jpg",
+    "highlights": ["Oil stain removal", "Moss & algae treatment", "Surface-cleaner finish"]
+  },
+  {
+    "id": "house-wash",
+    "name": "House soft washing",
+    "shortDescription": "Gentle, plant-safe cleaning for siding and walls.",
+    "description": "Low-pressure soft washing for stucco, vinyl, painted siding, and brick. Removes mildew, dust, and grime without damaging finishes or landscaping.",
+    "image": "/images/services/house-wash.jpg",
+    "highlights": ["Plant-safe detergents", "No paint damage", "Spot-free rinse"]
+  },
+  {
+    "id": "roof-soft-wash",
+    "name": "Roof soft washing",
+    "shortDescription": "Eliminate black streaks and moss safely.",
+    "description": "Specialized soft-wash treatment removes algae, moss, and lichen from asphalt and tile roofs. Extends roof life without high-pressure damage.",
+    "image": "/images/services/roof.jpg",
+    "highlights": ["Algae & moss kill", "No granule loss", "Gutters cleared"]
+  }
+]

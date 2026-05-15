@@ -1,0 +1,38 @@
+[
+  {
+    "author": "María R.",
+    "text": "Acme rebuilt our deck in three days. The crew was respectful, on time, and the finish is gorgeous. Highly recommend.",
+    "rating": 5,
+    "location": "Escazú"
+  },
+  {
+    "author": "Carlos M.",
+    "text": "Repainted three rooms and the trim. Zero overspray, no mess left behind, and the price matched the quote exactly.",
+    "rating": 5,
+    "location": "San José"
+  },
+  {
+    "author": "Lucía F.",
+    "text": "Replaced our kitchen flooring on a tight deadline. Communication was excellent throughout.",
+    "rating": 5,
+    "location": "Santa Ana"
+  },
+  {
+    "author": "Diego A.",
+    "text": "Quoted multiple companies — Acme was the only one to show up on time for the in-home estimate and the only one who delivered exactly what they promised.",
+    "rating": 5,
+    "location": "Curridabat"
+  },
+  {
+    "author": "Sofía B.",
+    "text": "The PDF quote was clear, fair, and detailed. The job came in under budget. Will use them again.",
+    "rating": 5,
+    "location": "Heredia"
+  },
+  {
+    "author": "Ricardo P.",
+    "text": "Tile work in our bathroom — flawless. They even noticed a hidden plumbing issue and helped us address it.",
+    "rating": 5,
+    "location": "Alajuela"
+  }
+]

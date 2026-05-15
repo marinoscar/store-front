@@ -1,0 +1,54 @@
+---
+import type { FaqItem } from '@store-front/shared-ui/lib/types';
+
+interface Props {
+  title?: string;
+  faqs: FaqItem[];
+}
+
+const { title = 'Frequently asked questions', faqs } = Astro.props;
+---
+
+<section id="faq" class="section section--surface">
+  <div class="container faq__wrap">
+    <span class="eyebrow">FAQ</span>
+    <h2>{title}</h2>
+
+    <div class="faq__list">
+      {faqs.map((f) => (
+        <details class="faq__item">
+          <summary>
+            <span>{f.q}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="faq__chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__wrap { max-width: 800px; margin: 0 auto; }
+  .faq__list { margin-top: 1.5rem; display: grid; gap: 0.5rem; }
+  .faq__item {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .faq__item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__chevron { transition: transform var(--motion); flex-shrink: 0; }
+  .faq__item[open] .faq__chevron { transform: rotate(180deg); }
+  .faq__item p { padding: 0 1.25rem 1.25rem; color: var(--color-muted); }
+</style>

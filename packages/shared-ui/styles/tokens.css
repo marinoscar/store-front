@@ -1,0 +1,58 @@
+/* Design tokens. Sites override these in their own theme.css. */
+:root {
+  /* Brand palette — sites override these */
+  --color-primary: #0f172a;
+  --color-primary-hover: #1e293b;
+  --color-primary-fg: #ffffff;
+  --color-accent: #f59e0b;
+  --color-accent-hover: #d97706;
+  --color-accent-fg: #111827;
+
+  /* Neutral palette */
+  --color-bg: #ffffff;
+  --color-fg: #111827;
+  --color-muted: #6b7280;
+  --color-muted-2: #9ca3af;
+  --color-surface: #f9fafb;
+  --color-surface-2: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
+  /* Typography */
+  --font-display: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.25rem;
+  --fs-3xl: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+
+  /* Spacing & layout */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --maxw-prose: 65ch;
+  --maxw-page: 1200px;
+  --pad-page-x: clamp(1rem, 2vw, 2rem);
+  --gap-section: clamp(3rem, 6vw, 5rem);
+
+  /* Effects */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --motion-fast: 150ms ease;
+  --motion: 250ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

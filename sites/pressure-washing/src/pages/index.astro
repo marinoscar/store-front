@@ -1,0 +1,95 @@
+---
+import BaseLayout from '@store-front/shared-ui/components/layout/BaseLayout.astro';
+import Header from '@store-front/shared-ui/components/layout/Header.astro';
+import Footer from '@store-front/shared-ui/components/layout/Footer.astro';
+import StickyPhoneBar from '@store-front/shared-ui/components/layout/StickyPhoneBar.astro';
+
+import Hero from '@store-front/shared-ui/components/sections/Hero.astro';
+import TrustSignals from '@store-front/shared-ui/components/sections/TrustSignals.astro';
+import Services from '@store-front/shared-ui/components/sections/Services.astro';
+import BeforeAfter from '@store-front/shared-ui/components/sections/BeforeAfter.astro';
+import Reviews from '@store-front/shared-ui/components/sections/Reviews.astro';
+import WhyChooseUs from '@store-front/shared-ui/components/sections/WhyChooseUs.astro';
+import Process from '@store-front/shared-ui/components/sections/Process.astro';
+import ServiceArea from '@store-front/shared-ui/components/sections/ServiceArea.astro';
+import QuoteFormSection from '@store-front/shared-ui/components/sections/QuoteFormSection.astro';
+import CrewPhotos from '@store-front/shared-ui/components/sections/CrewPhotos.astro';
+import FAQ from '@store-front/shared-ui/components/sections/FAQ.astro';
+import FinalCTA from '@store-front/shared-ui/components/sections/FinalCTA.astro';
+import ChatbotMount from '@store-front/shared-ui/components/sections/ChatbotMount.astro';
+
+import meta from '../content/meta.json';
+import services from '../content/services.json';
+import reviews from '../content/reviews.json';
+import faq from '../content/faq.json';
+import processSteps from '../content/process.json';
+import '../styles/theme.css';
+
+const beforeAfter = [
+  { before: '/images/before-after/driveway-before.jpg', after: '/images/before-after/driveway-after.jpg', caption: 'Concrete driveway — Heredia' },
+  { before: '/images/before-after/house-before.jpg', after: '/images/before-after/house-after.jpg', caption: 'Stucco house wash — Escazú' },
+  { before: '/images/before-after/roof-before.jpg', after: '/images/before-after/roof-after.jpg', caption: 'Roof soft wash — Santa Ana' },
+];
+
+const reasons = [
+  { icon: '🛡️', title: 'Licensed & insured', description: 'Full liability and workers comp. You\'re covered if anything goes wrong.' },
+  { icon: '🌱', title: 'Plant & paint safe', description: 'Soft washing for delicate surfaces. Eco-safe detergents around landscaping.' },
+  { icon: '📷', title: 'Before & after photos', description: 'We document every job. You see exactly what we cleaned.' },
+  { icon: '⏰', title: 'On-time, every time', description: 'Show-up windows of 30 minutes, not 4 hours. We respect your day.' },
+  { icon: '💧', title: 'Water-efficient', description: 'Pressure washers use far less water than a garden hose for the same area.' },
+  { icon: '🏆', title: '30-day guarantee', description: 'If you spot something we missed, we come back and re-do it free.' },
+];
+
+const crew = [
+  { src: '/images/crew/owner.jpg', alt: 'Owner', name: 'Roberto Vega', role: 'Owner & operator' },
+  { src: '/images/crew/tech1.jpg', alt: 'Technician', name: 'Felipe Soto', role: 'Lead technician' },
+  { src: '/images/crew/tech2.jpg', alt: 'Technician', name: 'Andrés Mora', role: 'Soft-wash specialist' },
+];
+---
+
+<BaseLayout meta={meta} services={services} reviews={reviews} faq={faq}>
+  <Header slot="header" meta={meta} />
+
+  <Hero
+    meta={meta}
+    headline="Driveways, decks, and houses — like new again."
+    subhead="Professional pressure washing and soft washing across the Central Valley. Photo proof on every job. Free, same-day quotes."
+    image="/images/hero.jpg"
+    imageAlt="A freshly pressure-washed driveway"
+  />
+
+  <TrustSignals meta={meta} />
+
+  <Services
+    services={services}
+    intro="Whatever needs cleaning — concrete, siding, decks, roofs — we handle it with the right tool and the right pressure."
+  />
+
+  <BeforeAfter pairs={beforeAfter} />
+
+  <Process steps={processSteps} />
+
+  <Reviews reviews={reviews} />
+
+  <WhyChooseUs reasons={reasons} />
+
+  <ServiceArea meta={meta} />
+
+  <CrewPhotos
+    photos={crew}
+    intro="A small, dependable crew. Same faces every visit."
+  />
+
+  <QuoteFormSection
+    services={services}
+    intro="Send us a photo of the area. Get an exact quote — same day."
+  />
+
+  <FAQ faqs={faq} />
+
+  <FinalCTA meta={meta} headline="Ready to make it shine?" subhead="Free quotes, photo proof, satisfaction guaranteed." />
+
+  <Footer slot="footer" meta={meta} />
+  <StickyPhoneBar slot="overlays" meta={meta} />
+  <ChatbotMount slot="overlays" meta={meta} faq={faq} />
+</BaseLayout>

@@ -1,0 +1,36 @@
+{
+  "myhomeimprovementcompany.com": {
+    "brandName": "Acme Home Improvement",
+    "ownerEmail": "owner@acmehi.example",
+    "phone": "+1-555-0100",
+    "chatSystemPrompt": "You are the friendly virtual assistant for Acme Home Improvement, a licensed and insured home improvement company serving the Greater San José metropolitan area. Answer customer questions concisely. If asked about pricing, encourage the user to request a free quote using the Request a Quote button. Stay on topic: home improvement, renovation, painting, decking, flooring, our services, our service area, and scheduling. If asked something off-topic, politely redirect.",
+    "pricingRules": {
+      "interior-paint": { "base": 150, "perSqft": 2.5, "currency": "USD" },
+      "deck-rebuild":   { "base": 400, "perSqft": 18,  "currency": "USD" },
+      "flooring":       { "base": 200, "perSqft": 6,   "currency": "USD" }
+    },
+    "serviceArea": { "type": "radius", "centerLat": 9.9333, "centerLng": -84.0833, "radiusKm": 40 },
+    "pdfTheme": {
+      "primary": "#1d4ed8",
+      "accent": "#f97316",
+      "logoS3Key": "branding/myhomeimprovementcompany.com/logo.png"
+    }
+  },
+  "mypressurewashingcompany.com": {
+    "brandName": "BlueWave Pressure Washing",
+    "ownerEmail": "owner@bluewavepw.example",
+    "phone": "+1-555-0101",
+    "chatSystemPrompt": "You are the friendly virtual assistant for BlueWave Pressure Washing, an exterior cleaning specialist serving the Central Valley. Answer customer questions concisely. For pricing, direct users to the Request a Quote wizard. Stay on topic: residential and commercial pressure washing, soft washing, surfaces we clean (driveways, decks, siding, roofs), service area, and scheduling. Politely redirect off-topic questions.",
+    "pricingRules": {
+      "driveway-wash": { "base": 90,  "perSqft": 0.20, "currency": "USD" },
+      "house-wash":    { "base": 180, "perSqft": 0.35, "currency": "USD" },
+      "roof-soft-wash":{ "base": 250, "perSqft": 0.50, "currency": "USD" }
+    },
+    "serviceArea": { "type": "radius", "centerLat": 9.9333, "centerLng": -84.0833, "radiusKm": 35 },
+    "pdfTheme": {
+      "primary": "#0e7490",
+      "accent": "#fbbf24",
+      "logoS3Key": "branding/mypressurewashingcompany.com/logo.png"
+    }
+  }
+}

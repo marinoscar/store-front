@@ -1,0 +1,95 @@
+---
+import BaseLayout from '@store-front/shared-ui/components/layout/BaseLayout.astro';
+import Header from '@store-front/shared-ui/components/layout/Header.astro';
+import Footer from '@store-front/shared-ui/components/layout/Footer.astro';
+import StickyPhoneBar from '@store-front/shared-ui/components/layout/StickyPhoneBar.astro';
+
+import Hero from '@store-front/shared-ui/components/sections/Hero.astro';
+import TrustSignals from '@store-front/shared-ui/components/sections/TrustSignals.astro';
+import Services from '@store-front/shared-ui/components/sections/Services.astro';
+import BeforeAfter from '@store-front/shared-ui/components/sections/BeforeAfter.astro';
+import Reviews from '@store-front/shared-ui/components/sections/Reviews.astro';
+import WhyChooseUs from '@store-front/shared-ui/components/sections/WhyChooseUs.astro';
+import Process from '@store-front/shared-ui/components/sections/Process.astro';
+import ServiceArea from '@store-front/shared-ui/components/sections/ServiceArea.astro';
+import QuoteFormSection from '@store-front/shared-ui/components/sections/QuoteFormSection.astro';
+import CrewPhotos from '@store-front/shared-ui/components/sections/CrewPhotos.astro';
+import FAQ from '@store-front/shared-ui/components/sections/FAQ.astro';
+import FinalCTA from '@store-front/shared-ui/components/sections/FinalCTA.astro';
+import ChatbotMount from '@store-front/shared-ui/components/sections/ChatbotMount.astro';
+
+import meta from '../content/meta.json';
+import services from '../content/services.json';
+import reviews from '../content/reviews.json';
+import faq from '../content/faq.json';
+import processSteps from '../content/process.json';
+import '../styles/theme.css';
+
+const beforeAfter = [
+  { before: '/images/before-after/deck-before.jpg', after: '/images/before-after/deck-after.jpg', caption: 'Cedar deck rebuild — Escazú' },
+  { before: '/images/before-after/kitchen-before.jpg', after: '/images/before-after/kitchen-after.jpg', caption: 'Full kitchen refresh — San José' },
+  { before: '/images/before-after/floor-before.jpg', after: '/images/before-after/floor-after.jpg', caption: 'Engineered hardwood install — Santa Ana' },
+];
+
+const reasons = [
+  { icon: '🛡️', title: 'Licensed & insured', description: 'Full liability coverage and workers comp. We protect you on every job.' },
+  { icon: '⏱️', title: 'On time, on budget', description: 'Detailed quotes, written timelines, daily updates. No surprises.' },
+  { icon: '🏆', title: '12+ years in the area', description: 'Hundreds of homes improved across the Central Valley. References on request.' },
+  { icon: '✨', title: 'Quality guarantee', description: 'We don\'t leave until you\'re thrilled. Workmanship warranty included.' },
+  { icon: '📷', title: 'Transparent process', description: 'Photo updates daily so you always know what\'s happening — even if you\'re away.' },
+  { icon: '🧹', title: 'Clean job sites', description: 'We protect your floors, contain dust, and leave the site cleaner than we found it.' },
+];
+
+const crew = [
+  { src: '/images/crew/owner.jpg', alt: 'Owner', name: 'Juan Acme', role: 'Owner & lead carpenter' },
+  { src: '/images/crew/foreman.jpg', alt: 'Foreman', name: 'Sara Vega', role: 'Project manager' },
+  { src: '/images/crew/painter.jpg', alt: 'Painter', name: 'Mateo Solís', role: 'Lead painter' },
+];
+---
+
+<BaseLayout meta={meta} services={services} reviews={reviews} faq={faq}>
+  <Header slot="header" meta={meta} />
+
+  <Hero
+    meta={meta}
+    headline="Renovations done right, on time, and on budget."
+    subhead="Painting, decking, flooring and more — handled by a licensed crew that shows up, communicates, and stands behind the work."
+    image="/images/hero.jpg"
+    imageAlt="A freshly renovated home interior"
+  />
+
+  <TrustSignals meta={meta} />
+
+  <Services
+    services={services}
+    intro="Three things we do exceptionally well. Don't see what you need? Call us — we may still be able to help."
+  />
+
+  <BeforeAfter pairs={beforeAfter} />
+
+  <Process steps={processSteps} />
+
+  <Reviews reviews={reviews} />
+
+  <WhyChooseUs reasons={reasons} />
+
+  <ServiceArea meta={meta} />
+
+  <CrewPhotos
+    photos={crew}
+    intro="The same crew shows up at your home every day. Real people, real accountability."
+  />
+
+  <QuoteFormSection
+    services={services}
+    intro="Tell us about your project. Snap a few photos. Get a written PDF quote — typically same-day."
+  />
+
+  <FAQ faqs={faq} />
+
+  <FinalCTA meta={meta} />
+
+  <Footer slot="footer" meta={meta} />
+  <StickyPhoneBar slot="overlays" meta={meta} />
+  <ChatbotMount slot="overlays" meta={meta} faq={faq} />
+</BaseLayout>

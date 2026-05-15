@@ -1,0 +1,61 @@
+# Compose stack for store-front.
+# Path on the VPS: /opt/infra/apps/store-front/deploy/
+#
+# Bring up:    docker compose up -d --build
+# Tail logs:   docker compose logs -f api
+# Tear down:   docker compose down
+#
+# Each static-* service serves one business's built Astro `dist/` directory
+# behind a minimal nginx-alpine container. The `api` service hosts the shared
+# Fastify backend. All three join the existing `proxy` external network so
+# the system Nginx in /opt/infra/proxy/ can route to them by container name.
+
+name: store-front
+
+networks:
+  proxy:
+    external: true
+
+services:
+  api:
+    build:
+      context: ../services/api
+      dockerfile: Dockerfile
+    container_name: store-front-api
+    restart: unless-stopped
+    networks: [proxy]
+    env_file: .env
+    volumes:
+      - ./sites.config.json:/app/sites.config.json:ro
+    environment:
+      SITES_CONFIG: /app/sites.config.json
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  static-home-improvement:
+    image: nginx:1.27-alpine
+    container_name: store-front-home-improvement
+    restart: unless-stopped
+    networks: [proxy]
+    volumes:
+      - ../sites/home-improvement/dist:/usr/share/nginx/html:ro
+      - ./nginx-site.conf.template:/etc/nginx/conf.d/default.conf:ro
+    expose:
+      - "80"
+
+  static-pressure-washing:
+    image: nginx:1.27-alpine
+    container_name: store-front-pressure-washing
+    restart: unless-stopped
+    networks: [proxy]
+    volumes:
+      - ../sites/pressure-washing/dist:/usr/share/nginx/html:ro
+      - ./nginx-site.conf.template:/etc/nginx/conf.d/default.conf:ro
+    expose:
+      - "80"
