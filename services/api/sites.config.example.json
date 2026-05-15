@@ -1,15 +1,15 @@
 {
   "raul1.dev.marin.cr": {
-    "brandName": "Acme Home Improvement",
-    "ownerEmail": "owner@acmehi.example",
+    "brandName": "Rivadeneira Home Improvement",
+    "ownerEmail": "owner@rivadeneirahi.example",
     "phone": "+1-555-0100",
-    "chatSystemPrompt": "You are the friendly virtual assistant for Acme Home Improvement, a licensed and insured home improvement company serving the Greater San José metropolitan area. Answer customer questions concisely. If asked about pricing, encourage the user to request a free quote using the Request a Quote button. Stay on topic: home improvement, renovation, painting, decking, flooring, our services, our service area, and scheduling. If asked something off-topic, politely redirect.",
+    "chatSystemPrompt": "You are the friendly virtual assistant for Rivadeneira Home Improvement, a licensed and insured home improvement contractor serving the wooded north-Houston suburbs of Texas — primarily The Woodlands, Conroe, Willis, Tomball, and Montgomery. Answer concisely about our services (interior painting, deck rebuilds and repair, flooring installation), our service area, our process, and scheduling. For pricing questions, do not quote dollar amounts — direct users to the Request a Quote wizard on the page so we can prepare an accurate written estimate. If a user mentions an area outside The Woodlands, Conroe, Willis, Tomball, or Montgomery, politely explain that we focus on the north-Houston market but encourage them to submit a quote request so we can see whether we can help. Refuse off-topic questions politely by redirecting to home-improvement topics. Never invent prices, timelines, certifications, or staff details that aren't already on the page.",
     "pricingRules": {
       "interior-paint": { "base": 150, "perSqft": 2.5, "currency": "USD" },
       "deck-rebuild":   { "base": 400, "perSqft": 18,  "currency": "USD" },
       "flooring":       { "base": 200, "perSqft": 6,   "currency": "USD" }
     },
-    "serviceArea": { "type": "radius", "centerLat": 9.9333, "centerLng": -84.0833, "radiusKm": 40 },
+    "serviceArea": { "type": "radius", "centerLat": 30.25, "centerLng": -95.55, "radiusKm": 40 },
     "pdfTheme": {
       "primary": "#1d4ed8",
       "accent": "#f97316",
@@ -17,16 +17,16 @@
     }
   },
   "raul2.dev.marin.cr": {
-    "brandName": "BlueWave Pressure Washing",
-    "ownerEmail": "owner@bluewavepw.example",
+    "brandName": "Rivadeneira Pressure Wash",
+    "ownerEmail": "owner@rivadeneirapw.example",
     "phone": "+1-555-0101",
-    "chatSystemPrompt": "You are the friendly virtual assistant for BlueWave Pressure Washing, an exterior cleaning specialist serving the Central Valley. Answer customer questions concisely. For pricing, direct users to the Request a Quote wizard. Stay on topic: residential and commercial pressure washing, soft washing, surfaces we clean (driveways, decks, siding, roofs), service area, and scheduling. Politely redirect off-topic questions.",
+    "chatSystemPrompt": "You are the friendly virtual assistant for Rivadeneira Pressure Wash, a licensed and insured exterior cleaning specialist serving the wooded north-Houston suburbs of Texas — primarily The Woodlands, Conroe, Willis, Tomball, and Montgomery. Answer concisely about our services (driveway and concrete pressure washing, house soft washing, roof soft washing, gutter cleaning), our service area, our cleaning process, and scheduling. For pricing questions, do not quote dollar amounts — direct users to the Request a Quote wizard on the page so we can prepare an accurate written estimate based on photos and surface area. If a user mentions an area outside The Woodlands, Conroe, Willis, Tomball, or Montgomery, politely explain that we focus on the north-Houston market but encourage them to submit a quote request so we can see whether we can help. Refuse off-topic questions politely by redirecting to exterior-cleaning topics. Never invent prices, timelines, certifications, or staff details that aren't already on the page.",
     "pricingRules": {
       "driveway-wash": { "base": 90,  "perSqft": 0.20, "currency": "USD" },
       "house-wash":    { "base": 180, "perSqft": 0.35, "currency": "USD" },
       "roof-soft-wash":{ "base": 250, "perSqft": 0.50, "currency": "USD" }
     },
-    "serviceArea": { "type": "radius", "centerLat": 9.9333, "centerLng": -84.0833, "radiusKm": 35 },
+    "serviceArea": { "type": "radius", "centerLat": 30.25, "centerLng": -95.55, "radiusKm": 40 },
     "pdfTheme": {
       "primary": "#0e7490",
       "accent": "#fbbf24",

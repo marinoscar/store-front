@@ -1,32 +1,31 @@
 {
-  "brandName": "BlueWave Pressure Washing",
+  "brandName": "Rivadeneira Pressure Wash",
   "tagline": "Driveways, decks, and houses — like new again.",
-  "description": "BlueWave is a licensed pressure-washing company serving the Central Valley. Residential and commercial exterior cleaning, soft washing, and roof treatment. Free quotes, photo proof, no chemicals on plants.",
+  "description": "Rivadeneira Pressure Wash is a licensed exterior-cleaning company serving the wooded north-Houston suburbs of Texas — The Woodlands, Conroe, Willis, Tomball, and Montgomery. Residential and commercial pressure washing, soft washing, and roof treatment. Free quotes, photo proof, no chemicals on plants.",
   "phone": "(555) 010-0200",
   "phoneE164": "+15550100200",
-  "email": "hello@bluewavepw.example",
+  "email": "hello@rivadeneirapw.example",
   "address": {
-    "street": "Avenida Central",
-    "city": "San José",
-    "region": "San José",
-    "postal": "10102",
-    "country": "CR",
-    "lat": 9.9333,
-    "lng": -84.0833
+    "street": "1500 N Loop 336 W",
+    "city": "Conroe",
+    "region": "TX",
+    "postal": "77304",
+    "country": "US",
+    "lat": 30.3119,
+    "lng": -95.4561
   },
   "areaServed": [
-    "San José",
-    "Escazú",
-    "Santa Ana",
-    "Heredia",
-    "Alajuela",
-    "Cartago"
+    "The Woodlands",
+    "Conroe",
+    "Willis",
+    "Tomball",
+    "Montgomery"
   ],
   "siteUrl": "https://raul2.dev.marin.cr",
   "ogImage": "/images/og-image.jpg",
   "socials": {
-    "facebook": "https://facebook.com/bluewavepw",
-    "instagram": "https://instagram.com/bluewavepw"
+    "facebook": "https://facebook.com/rivadeneirapw",
+    "instagram": "https://instagram.com/rivadeneirapw"
   },
   "yearsInBusiness": 6,
   "certifications": ["Licensed & insured", "Eco-safe detergents"]

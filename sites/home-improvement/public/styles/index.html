@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pick a style · Rivadeneira Home Improvement</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Space+Grotesk:wght@500;700&family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,700;10..48,800&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#fafafa; --ink:#0f0f10; --muted:#5b5b60; --line:#e6e3dd; --soft:#f4f1ec;
+    --pad: clamp(1rem, 2vw, 2rem);
+  }
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink); background:var(--bg);
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:var(--pad)}
+
+  /* Top bar */
+  .top{
+    padding-block:1.25rem; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:.9375rem;
+  }
+  .top__brand{font-weight:700; letter-spacing:-0.01em}
+  .top__brand small{color:var(--muted); margin-left:.5rem; font-weight:500}
+  .top a.live{color:var(--muted); border-bottom:1px solid var(--muted)}
+
+  /* Intro */
+  .intro{padding-block:clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem)}
+  .intro__eyebrow{
+    display:inline-block; color:var(--muted); letter-spacing:.16em;
+    text-transform:uppercase; font-size:.75rem; font-weight:600; margin-bottom:1rem;
+  }
+  .intro h1{
+    font-family:'Fraunces','Cormorant Garamond',serif; font-weight:700;
+    font-size:clamp(2.5rem, 5vw, 4.25rem);
+    line-height:1.04; letter-spacing:-0.02em; margin:0 0 1rem;
+    max-width:18ch;
+  }
+  .intro h1 em{font-style:italic; font-weight:500; color:#7a5a3e}
+  .intro p{
+    color:var(--muted); font-size:clamp(1.0625rem, 1.4vw, 1.1875rem);
+    max-width:58ch; margin:0;
+  }
+
+  /* Grid of style cards */
+  .grid{
+    display:grid; gap:clamp(1.25rem, 2vw, 1.75rem);
+    grid-template-columns:1fr;
+    padding-bottom:clamp(3rem, 6vw, 5rem);
+  }
+  @media (min-width:760px){ .grid{grid-template-columns:1fr 1fr} }
+
+  .card{
+    display:flex; flex-direction:column;
+    border:1px solid var(--line); border-radius:18px;
+    overflow:hidden; background:#fff;
+    transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+  }
+  .card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px -20px rgba(20,18,12,0.18), 0 4px 12px rgba(0,0,0,0.04);
+    border-color:#d6d2c8;
+  }
+
+  /* Preview area is a mini-hero rendered in each style's fonts/colors */
+  .preview{
+    aspect-ratio:16/9;
+    padding:clamp(1rem, 2vw, 1.75rem);
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden;
+    background-position:center; background-size:cover;
+  }
+  .preview__tag{
+    font-size:.6875rem; letter-spacing:.18em; text-transform:uppercase;
+    font-weight:700; display:inline-flex; align-items:center; gap:.5rem;
+  }
+  .preview__tag::before{
+    content:""; display:inline-block; width:24px; height:1px; background:currentColor;
+  }
+  .preview__heading{
+    font-size:clamp(1.5rem, 2.6vw, 2rem); line-height:1.05;
+    letter-spacing:-0.02em; max-width:18ch; margin:0;
+  }
+  .preview__cta{
+    align-self:flex-start; padding:.5rem 1rem; border-radius:999px;
+    font-size:.8125rem; font-weight:600;
+  }
+
+  /* Style-specific previews */
+  .p-editorial{ background:linear-gradient(180deg, #faf6ef 0%, #f3ece0 100%); color:#1a1a1a }
+  .p-editorial .preview__heading{ font-family:'Fraunces',serif; font-weight:700; font-style:italic }
+  .p-editorial .preview__heading b{ font-style:normal; font-weight:900; color:#8b3a2f }
+  .p-editorial .preview__cta{ background:#1a1a1a; color:#faf6ef }
+
+  .p-obsidian{ background:radial-gradient(120% 80% at 20% 0%, #1a1a22 0%, #08080b 60%); color:#f5f4f1 }
+  .p-obsidian .preview__heading{ font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.025em }
+  .p-obsidian .preview__heading b{ color:#e0a060; font-weight:800 }
+  .p-obsidian .preview__cta{ background:#c47a3c; color:#0a0a0c }
+  .p-obsidian .preview__tag{ color:#9a948a; font-family:'IBM Plex Mono',monospace }
+
+  .p-lonestar{
+    background:
+      radial-gradient(100% 60% at 100% 0%, rgba(180,120,60,0.18), transparent 60%),
+      linear-gradient(180deg, #f4ede0 0%, #ebdcc4 100%);
+    color:#3a2419;
+  }
+  .p-lonestar .preview__heading{ font-family:'Fraunces',serif; font-weight:900; letter-spacing:-0.015em }
+  .p-lonestar .preview__heading b{ color:#c45a3f; font-weight:900 }
+  .p-lonestar .preview__cta{ background:#3a2419; color:#f4ede0; border-radius:6px }
+
+  .p-bold{ background:#fff; color:#0a0a0a; border-bottom:8px solid #0a0a0a }
+  .p-bold .preview__heading{ font-family:'Archivo Black','Inter',sans-serif; text-transform:uppercase; letter-spacing:-0.02em; line-height:.95 }
+  .p-bold .preview__heading b{ color:#ff5722; font-weight:900 }
+  .p-bold .preview__cta{ background:#0a0a0a; color:#ffffff; border-radius:0; padding:.625rem 1.25rem }
+
+  .p-softstone{
+    background:
+      radial-gradient(circle at 90% 10%, #f5b896 0%, transparent 35%),
+      radial-gradient(circle at 0% 100%, #c2d4c0 0%, transparent 50%),
+      #fdf6ec;
+    color:#2a2826;
+  }
+  .p-softstone .preview__heading{ font-family:'DM Serif Display',serif; font-weight:400 }
+  .p-softstone .preview__heading b{ color:#b85c3f; font-style:italic }
+  .p-softstone .preview__cta{ background:#3f6b58; color:#fdf6ec; border-radius:999px }
+
+  /* Card meta below preview */
+  .meta{ padding:clamp(1.25rem, 2vw, 1.75rem); }
+  .meta__row{ display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+  .meta__title{
+    font-weight:700; font-size:1.0625rem; letter-spacing:-0.01em; margin:0;
+  }
+  .meta__num{
+    font-feature-settings:"tnum"; font-variant-numeric:tabular-nums;
+    font-size:.75rem; color:var(--muted); font-weight:600;
+    border:1px solid var(--line); padding:.25rem .5rem; border-radius:999px;
+    flex-shrink:0;
+  }
+  .meta__desc{ color:var(--muted); margin:.5rem 0 1rem; font-size:.9375rem; max-width:42ch; }
+  .swatches{ display:flex; gap:.375rem; margin-bottom:1rem; }
+  .swatches span{
+    width:22px; height:22px; border-radius:6px; border:1px solid rgba(0,0,0,0.06);
+  }
+  .meta__cta{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-weight:600; font-size:.9375rem; color:var(--ink);
+    border-bottom:1.5px solid var(--ink); padding-bottom:2px;
+    transition:gap 200ms ease;
+  }
+  .meta__cta:hover{ gap:.75rem }
+  .meta__cta::after{ content:"→"; transition:transform 200ms ease }
+  .meta__cta:hover::after{ transform:translateX(2px) }
+
+  /* Footer */
+  .foot{
+    border-top:1px solid var(--line); padding-block:2rem;
+    color:var(--muted); font-size:.875rem;
+    display:flex; flex-wrap:wrap; gap:.5rem 1rem; justify-content:space-between;
+  }
+  .foot a{ border-bottom:1px solid currentColor }
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <div class="top__brand">Rivadeneira Home Improvement <small>style exploration</small></div>
+  <a class="live" href="/" target="_blank" rel="noopener">View live site ↗</a>
+</header>
+
+<section class="wrap intro">
+  <span class="intro__eyebrow">Choose your direction</span>
+  <h1>Five design directions for the <em>home-improvement</em> site.</h1>
+  <p>Same content, same imagery — five very different visual personalities. Open each in a new tab and live with it for a moment. The one that feels most like the business is the one to go with. You can mix and match later; right now the goal is to find the direction that resonates.</p>
+</section>
+
+<main class="wrap grid">
+
+  <!-- Style 1 -->
+  <article class="card">
+    <a class="preview p-editorial" href="editorial.html" target="_blank">
+      <span class="preview__tag">Style 01 · Editorial</span>
+      <h2 class="preview__heading">Renovations done right, <b>on time</b>, and on budget.</h2>
+      <span class="preview__cta">Get a free quote</span>
+    </a>
+    <div class="meta">
+      <div class="meta__row">
+        <h3 class="meta__title">Editorial</h3>
+        <span class="meta__num">01 / 05</span>
+      </div>
+      <p class="meta__desc">Architectural-magazine aesthetic. Serif italic display, asymmetric layouts, generous whitespace, full-bleed photography. Aspirational without being cold.</p>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:#faf6ef"></span>
+        <span style="background:#1a1a1a"></span>
+        <span style="background:#8b3a2f"></span>
+        <span style="background:#7a8c7a"></span>
+        <span style="background:#d4b984"></span>
+      </div>
+      <a class="meta__cta" href="editorial.html" target="_blank">Open style</a>
+    </div>
+  </article>
+
+  <!-- Style 2 -->
+  <article class="card">
+    <a class="preview p-obsidian" href="obsidian.html" target="_blank">
+      <span class="preview__tag">Style 02 · Obsidian</span>
+      <h2 class="preview__heading">Renovations done right, <b>on time</b>, and on budget.</h2>
+      <span class="preview__cta">Request quote</span>
+    </a>
+    <div class="meta">
+      <div class="meta__row">
+        <h3 class="meta__title">Obsidian</h3>
+        <span class="meta__num">02 / 05</span>
+      </div>
+      <p class="meta__desc">Premium dark mode. Near-black canvas, copper accents, soft glow effects, monospace timestamps. Confident, modern, "expert craftsman" vibe.</p>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:#0a0a0c"></span>
+        <span style="background:#1a1a22"></span>
+        <span style="background:#c47a3c"></span>
+        <span style="background:#2d5a4a"></span>
+        <span style="background:#f5f4f1"></span>
+      </div>
+      <a class="meta__cta" href="obsidian.html" target="_blank">Open style</a>
+    </div>
+  </article>
+
+  <!-- Style 3 -->
+  <article class="card">
+    <a class="preview p-lonestar" href="lone-star.html" target="_blank">
+      <span class="preview__tag">Style 03 · Lone Star</span>
+      <h2 class="preview__heading">Renovations done right, <b>on time</b>, and on budget.</h2>
+      <span class="preview__cta">Get my quote</span>
+    </a>
+    <div class="meta">
+      <div class="meta__row">
+        <h3 class="meta__title">Lone Star</h3>
+        <span class="meta__num">03 / 05</span>
+      </div>
+      <p class="meta__desc">Refined Texan. Chunky slab serif headlines, warm terracotta + walnut + sage palette, hand-crafted ornament details. Reads as "your neighbor's contractor".</p>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:#f4ede0"></span>
+        <span style="background:#3a2419"></span>
+        <span style="background:#c45a3f"></span>
+        <span style="background:#6b7c52"></span>
+        <span style="background:#b8884f"></span>
+      </div>
+      <a class="meta__cta" href="lone-star.html" target="_blank">Open style</a>
+    </div>
+  </article>
+
+  <!-- Style 4 -->
+  <article class="card">
+    <a class="preview p-bold" href="bold.html" target="_blank">
+      <span class="preview__tag">Style 04 · Bold</span>
+      <h2 class="preview__heading">Renovations done right, <b>on time</b>, on budget.</h2>
+      <span class="preview__cta">Get a quote</span>
+    </a>
+    <div class="meta">
+      <div class="meta__row">
+        <h3 class="meta__title">Bold</h3>
+        <span class="meta__num">04 / 05</span>
+      </div>
+      <p class="meta__desc">High-contrast statement. Oversized condensed display, stark black/white with one fiery accent, hard edges, invert-on-hover. Makes other contractors look quiet.</p>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:#ffffff;border:1px solid #ddd"></span>
+        <span style="background:#0a0a0a"></span>
+        <span style="background:#ff5722"></span>
+        <span style="background:#f5f5f5"></span>
+        <span style="background:#1a1a1a"></span>
+      </div>
+      <a class="meta__cta" href="bold.html" target="_blank">Open style</a>
+    </div>
+  </article>
+
+  <!-- Style 5 -->
+  <article class="card">
+    <a class="preview p-softstone" href="softstone.html" target="_blank">
+      <span class="preview__tag">Style 05 · Softstone</span>
+      <h2 class="preview__heading">Renovations done right, <b>on time</b>, on budget.</h2>
+      <span class="preview__cta">Request a quote</span>
+    </a>
+    <div class="meta">
+      <div class="meta__row">
+        <h3 class="meta__title">Softstone</h3>
+        <span class="meta__num">05 / 05</span>
+      </div>
+      <p class="meta__desc">Approachable & family-friendly. Soft sage + peach pastels, organic blob backgrounds, rounded everything, gentle spring transitions. Inviting and low-pressure.</p>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:#fdf6ec"></span>
+        <span style="background:#c2d4c0"></span>
+        <span style="background:#f5b896"></span>
+        <span style="background:#b85c3f"></span>
+        <span style="background:#3f6b58"></span>
+      </div>
+      <a class="meta__cta" href="softstone.html" target="_blank">Open style</a>
+    </div>
+  </article>
+
+</main>
+
+<footer class="wrap foot">
+  <span>All five pages use the same content & images. Only visual treatment differs.</span>
+  <span>Pick one and I'll wire it into the live site.</span>
+</footer>
+</body>
+</html>

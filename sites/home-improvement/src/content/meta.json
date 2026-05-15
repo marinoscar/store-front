@@ -1,32 +1,31 @@
 {
-  "brandName": "Acme Home Improvement",
+  "brandName": "Rivadeneira Home Improvement",
   "tagline": "Renovations done right, on time, and on budget.",
-  "description": "Acme Home Improvement is a licensed and insured remodeling contractor serving the Greater San José area. Free quotes, transparent pricing, and a 100% satisfaction guarantee.",
+  "description": "Rivadeneira Home Improvement is a licensed and insured remodeling contractor serving the wooded north-Houston suburbs of Texas — The Woodlands, Conroe, Willis, Tomball, and Montgomery. Free quotes, transparent pricing, and a 100% satisfaction guarantee.",
   "phone": "(555) 010-0100",
   "phoneE164": "+15550100100",
-  "email": "hello@acmehi.example",
+  "email": "hello@rivadeneirahi.example",
   "address": {
-    "street": "Calle 1, Avenida 2",
-    "city": "San José",
-    "region": "San José",
-    "postal": "10101",
-    "country": "CR",
-    "lat": 9.9333,
-    "lng": -84.0833
+    "street": "1300 Lake Robbins Dr",
+    "city": "The Woodlands",
+    "region": "TX",
+    "postal": "77380",
+    "country": "US",
+    "lat": 30.1658,
+    "lng": -95.4613
   },
   "areaServed": [
-    "San José",
-    "Escazú",
-    "Santa Ana",
-    "Curridabat",
-    "Alajuela",
-    "Heredia"
+    "The Woodlands",
+    "Conroe",
+    "Willis",
+    "Tomball",
+    "Montgomery"
   ],
   "siteUrl": "https://raul1.dev.marin.cr",
   "ogImage": "/images/og-image.jpg",
   "socials": {
-    "facebook": "https://facebook.com/acmehi",
-    "instagram": "https://instagram.com/acmehi"
+    "facebook": "https://facebook.com/rivadeneirahi",
+    "instagram": "https://instagram.com/rivadeneirahi"
   },
   "yearsInBusiness": 12,
   "certifications": ["Licensed contractor", "Insured up to $2M"]

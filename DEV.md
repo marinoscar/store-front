@@ -196,10 +196,10 @@ Implication: **never `docker compose up --build` without first running `pnpm -r 
 ```jsonc
 {
   "raul1.dev.marin.cr": {
-    "brandName": "Acme Home Improvement",
+    "brandName": "Rivadeneira Home Improvement",
     "ownerEmail": "owner@example.com",
     "phone": "+1-555-0100",
-    "chatSystemPrompt": "You are the assistant for Acme...",
+    "chatSystemPrompt": "You are the assistant for Rivadeneira...",
     "pricingRules": { "interior-paint": { "base": 150, "perSqft": 2.5, "currency": "USD" } },
     "serviceArea": { "type": "radius", "centerLat": 9.93, "centerLng": -84.08, "radiusKm": 40 },
     "pdfTheme": { "primary": "#1d4ed8", "logoS3Key": "branding/raul1.dev.marin.cr/logo.png" }

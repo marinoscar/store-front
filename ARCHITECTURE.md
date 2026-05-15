@@ -223,10 +223,10 @@ Cross-cutting:
 ```jsonc
 {
   "raul1.dev.marin.cr": {
-    "brandName": "Acme Home Improvement",
-    "ownerEmail": "owner@acmehi.com",
+    "brandName": "Rivadeneira Home Improvement",
+    "ownerEmail": "owner@rivadeneirahi.com",
     "phone": "+1-555-0100",
-    "chatSystemPrompt": "You are the assistant for Acme Home Improvement, serving the Greater San José area...",
+    "chatSystemPrompt": "You are the assistant for Rivadeneira Home Improvement, serving the wooded north-Houston suburbs (The Woodlands, Conroe, Willis, Tomball, Montgomery)...",
     "pricingRules": {
       "interior-paint":  { "base": 150, "perSqft": 2.50, "currency": "USD" },
       "deck-rebuild":    { "base": 400, "perSqft": 18,   "currency": "USD" }
@@ -248,7 +248,7 @@ Estimated time: **~10 minutes** under `*.marin.cr` (no new TLS cert needed). ~15
    ```bash
    cp -r sites/home-improvement sites/<new-business>
    ```
-3. **Edit `src/content/*.json`** — brand name, phone, services, reviews, FAQ, process. Replace every "Acme" string.
+3. **Edit `src/content/*.json`** — brand name, phone, services, reviews, FAQ, process. Replace every brand-name string.
 4. **Edit `src/styles/theme.css`** — set `--color-primary`, `--color-accent`, optional `--font-display`.
 5. **Replace `public/images/`** — hero, before/after, crew, og:image. Update `favicon.svg`.
 6. **Update `astro.config.mjs`** — set `site` to the production URL.

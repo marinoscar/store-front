@@ -203,7 +203,7 @@ export default function QuoteWizard({ services }: Props) {
               value={addressQuery}
               onChange={(e) => setAddressQuery(e.target.value)}
               onBlur={checkAddress}
-              placeholder="123 Main St, San José"
+              placeholder="123 Main St, The Woodlands, TX"
             />
           </div>
           <button type="button" className="btn btn--ghost" onClick={checkAddress} disabled={addressLoading}>

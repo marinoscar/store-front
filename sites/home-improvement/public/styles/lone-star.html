@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rivadeneira Home Improvement · Lone Star style</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --paper:#f4ede0; --paper-2:#ebdcc4; --cream:#fbf6ec;
+    --walnut:#3a2419; --walnut-2:#553a2c; --ink-soft:#6b4e3d;
+    --muted:#8e7766;
+    --terracotta:#c45a3f; --terracotta-2:#a04428;
+    --sage:#6b7c52; --sage-2:#5a6a44;
+    --brass:#b8884f; --brass-2:#9c7235;
+    --line:#d6c6a8; --line-2:#c2ad88;
+    --slab:'Fraunces',Georgia,serif;
+    --sans:'IBM Plex Sans',system-ui,sans-serif;
+    --hand:'Caveat',cursive;
+    --pad:clamp(1rem,2vw,2rem);
+    --gap:clamp(3.5rem,7vw,6rem);
+  }
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--walnut);
+    font-family:var(--sans); line-height:1.55; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60% 30% at 0% 0%, rgba(196,90,63,0.10), transparent 60%),
+      radial-gradient(50% 30% at 100% 100%, rgba(107,124,82,0.10), transparent 60%);
+  }
+  a{color:inherit; text-decoration:none}
+  img{display:block; max-width:100%; height:auto}
+  .wrap{max-width:1240px; margin:0 auto; padding-inline:var(--pad)}
+
+  /* ───── ornament SVG (single use, embed inline as background) ───── */
+  .ornament{
+    display:flex; align-items:center; gap:1rem; justify-content:center;
+    color:var(--brass); margin-block:clamp(2rem,4vw,3rem);
+  }
+  .ornament::before, .ornament::after{
+    content:""; flex:1; height:1px; background:linear-gradient(90deg, transparent, currentColor 30%, currentColor 70%, transparent);
+    max-width:140px;
+  }
+  .ornament svg{flex-shrink:0}
+
+  /* eyebrow */
+  .eye{
+    display:inline-flex; align-items:center; gap:.625rem;
+    font-family:var(--sans); font-size:.75rem; font-weight:600;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--terracotta);
+  }
+  .eye::before{content:"★"; color:var(--brass)}
+
+  /* ───── Top bar ───── */
+  .top{
+    border-bottom:2px solid var(--line); background:var(--paper);
+    position:sticky; top:0; z-index:40;
+  }
+  .top__row{display:flex; align-items:center; justify-content:space-between; padding-block:1rem; gap:1.5rem}
+  .top__brand{font-family:var(--slab); font-weight:900; font-size:1.0625rem; letter-spacing:-0.01em; display:flex; align-items:center; gap:.5rem; color:var(--walnut)}
+  .top__brand .star{color:var(--terracotta); font-size:1.125rem}
+  .top__nav{display:none; gap:1.5rem; font-size:.875rem; color:var(--ink-soft); font-weight:500}
+  .top__nav a:hover{color:var(--terracotta)}
+  .top__cta{
+    font-weight:600; font-size:.875rem; padding:.5rem .875rem;
+    border:2px solid var(--walnut); border-radius:6px; color:var(--walnut);
+    transition:background 200ms, color 200ms;
+  }
+  .top__cta:hover{background:var(--walnut); color:var(--paper)}
+  @media (min-width:880px){ .top__nav{display:flex} }
+
+  /* ───── Buttons ───── */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+    padding:.95rem 1.6rem; font-weight:700; font-size:.9375rem; border-radius:8px;
+    transition:transform 200ms, background 200ms, color 200ms; cursor:pointer;
+  }
+  .btn--solid{background:var(--terracotta); color:var(--cream); box-shadow:0 6px 0 var(--terracotta-2)}
+  .btn--solid:hover{transform:translateY(2px); box-shadow:0 4px 0 var(--terracotta-2)}
+  .btn--ghost{background:transparent; color:var(--walnut); border:2px solid var(--walnut)}
+  .btn--ghost:hover{background:var(--walnut); color:var(--cream)}
+  .btn--accent{background:var(--brass); color:var(--cream); box-shadow:0 6px 0 var(--brass-2)}
+  .btn--accent:hover{transform:translateY(2px); box-shadow:0 4px 0 var(--brass-2)}
+
+  /* ───── Hero ───── */
+  .hero{padding-block:clamp(3.5rem,7vw,6rem) clamp(2rem,4vw,3rem); position:relative}
+  .hero__inner{display:grid; gap:clamp(2rem,4vw,3.5rem); grid-template-columns:1fr; align-items:center}
+  @media (min-width:880px){ .hero__inner{grid-template-columns:1.05fr 1fr} }
+  .hero__h{
+    font-family:var(--slab); font-weight:900;
+    font-size:clamp(2.75rem,6vw,5rem); line-height:1.0; letter-spacing:-0.018em;
+    margin:1.25rem 0 1.25rem; max-width:14ch; color:var(--walnut);
+  }
+  .hero__h em{font-style:normal; color:var(--terracotta)}
+  .hero__h .hand{
+    font-family:var(--hand); font-weight:700; font-style:italic;
+    color:var(--sage); font-size:.7em; display:block; margin-bottom:.5rem;
+    transform:rotate(-2deg) translateX(.5rem);
+  }
+  .hero__sub{font-size:1.125rem; color:var(--ink-soft); max-width:48ch; margin:0 0 2rem}
+  .hero__ctas{display:flex; gap:1rem; flex-wrap:wrap}
+  .hero__media{position:relative}
+  .hero__media img{width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:14px; box-shadow:0 24px 48px -16px rgba(58,36,25,0.30), 0 12px 0 -2px var(--terracotta), 0 24px 0 -4px var(--brass)}
+  .hero__sticker{
+    position:absolute; top:-1rem; right:-1rem; width:120px; height:120px;
+    background:var(--cream); border:2px solid var(--walnut); border-radius:50%;
+    display:grid; place-items:center; text-align:center; font-family:var(--slab); font-weight:900; line-height:1;
+    transform:rotate(-6deg); padding:1rem; color:var(--walnut);
+    box-shadow:0 6px 0 var(--walnut);
+  }
+  .hero__sticker .big{display:block; font-size:2rem; color:var(--terracotta); margin-bottom:.25rem}
+  .hero__sticker .small{font-size:.625rem; letter-spacing:.06em; text-transform:uppercase; font-family:var(--sans); font-weight:600}
+
+  /* ───── Trust strip ───── */
+  .trust{background:var(--walnut); color:var(--cream); padding-block:1.25rem}
+  .trust__row{display:flex; justify-content:center; gap:clamp(1.5rem,3vw,3rem); flex-wrap:wrap; font-size:.875rem}
+  .trust__row b{font-family:var(--slab); font-weight:900; color:var(--brass); font-size:1rem}
+  .trust__row .sep{color:var(--ink-soft); opacity:.6}
+
+  /* ───── Section heading ───── */
+  .section{padding-block:var(--gap)}
+  .section__head{display:grid; gap:1rem; max-width:46rem; margin-bottom:clamp(2rem,4vw,3rem)}
+  .section__h{
+    font-family:var(--slab); font-weight:900;
+    font-size:clamp(2.25rem,4.5vw,3.75rem); line-height:1.02; letter-spacing:-0.018em;
+    margin:0; max-width:18ch;
+  }
+  .section__h em{font-style:normal; color:var(--terracotta)}
+  .section__lede{color:var(--ink-soft); font-size:1.0625rem; max-width:55ch}
+
+  /* ───── Services ───── */
+  .svcs{display:grid; gap:1.25rem; grid-template-columns:1fr}
+  @media (min-width:760px){ .svcs{grid-template-columns:repeat(3,1fr)} }
+  .svc{
+    background:var(--cream); border:2px solid var(--walnut); border-radius:16px;
+    overflow:hidden; transition:transform 200ms ease; position:relative;
+    box-shadow:0 8px 0 var(--walnut);
+  }
+  .svc:hover{transform:translateY(-3px); box-shadow:0 11px 0 var(--walnut)}
+  .svc__img{aspect-ratio:5/4; object-fit:cover; width:100%}
+  .svc__body{padding:1.5rem; display:flex; flex-direction:column; gap:.5rem}
+  .svc__no{font-family:var(--hand); color:var(--sage); font-size:1.25rem; line-height:1; font-weight:700; transform:rotate(-2deg); display:inline-block}
+  .svc__h{font-family:var(--slab); font-weight:900; font-size:1.5rem; letter-spacing:-0.01em; margin:0}
+  .svc__p{color:var(--ink-soft); margin:0; font-size:.9375rem}
+  .svc__list{list-style:none; padding:0; margin:.5rem 0 0; font-size:.875rem}
+  .svc__list li{padding-block:.3rem; display:flex; gap:.5rem; align-items:baseline}
+  .svc__list li::before{content:"✓"; color:var(--terracotta); font-weight:700}
+
+  /* ───── Before/After ───── */
+  .ba{display:grid; gap:clamp(2rem,4vw,3rem)}
+  .ba__item{position:relative}
+  .ba__row{display:grid; grid-template-columns:1fr 1fr; gap:.5rem; border:2px solid var(--walnut); padding:.5rem; border-radius:14px; background:var(--cream)}
+  .ba__half{position:relative; overflow:hidden; border-radius:8px}
+  .ba__half img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+  .ba__lbl{
+    position:absolute; top:.75rem; left:.75rem;
+    font-family:var(--slab); font-weight:900; font-size:.75rem; letter-spacing:.08em;
+    padding:.25rem .625rem; border-radius:4px;
+    background:var(--cream); color:var(--walnut); border:2px solid var(--walnut);
+  }
+  .ba__lbl--after{background:var(--terracotta); color:var(--cream); border-color:var(--terracotta)}
+  .ba__cap{
+    font-family:var(--slab); font-weight:500; font-style:italic; font-size:1rem;
+    color:var(--ink-soft); margin-top:1rem; text-align:center; max-width:50ch; margin-inline:auto;
+  }
+  .ba__cap b{font-weight:700; color:var(--walnut); font-style:normal}
+
+  /* ───── Process ───── */
+  .proc{display:grid; gap:1.25rem; grid-template-columns:1fr}
+  @media (min-width:760px){ .proc{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:1100px){ .proc{grid-template-columns:repeat(4,1fr)} }
+  .proc__step{
+    background:var(--cream); border:2px solid var(--walnut); border-radius:14px;
+    padding:1.75rem; position:relative; box-shadow:0 6px 0 var(--walnut);
+  }
+  .proc__n{
+    width:54px; height:54px; background:var(--terracotta); color:var(--cream);
+    font-family:var(--slab); font-weight:900; font-size:1.5rem;
+    display:grid; place-items:center; border-radius:50%; border:2px solid var(--walnut);
+    box-shadow:0 4px 0 var(--walnut); margin-bottom:1rem;
+  }
+  .proc__h{font-family:var(--slab); font-weight:900; font-size:1.25rem; margin:0 0 .5rem; letter-spacing:-0.01em}
+  .proc__p{color:var(--ink-soft); margin:0; font-size:.9375rem}
+
+  /* ───── Reviews ───── */
+  .reviews{display:grid; gap:1.25rem; grid-template-columns:1fr}
+  @media (min-width:760px){ .reviews{grid-template-columns:1fr 1fr 1fr} }
+  .qt{
+    background:var(--cream); border:2px solid var(--walnut); border-radius:14px;
+    padding:1.5rem; box-shadow:0 6px 0 var(--walnut); display:flex; flex-direction:column; gap:.75rem;
+  }
+  .qt__stars{color:var(--brass); letter-spacing:2px; font-size:1rem}
+  .qt__text{font-family:var(--slab); font-weight:500; font-size:1rem; line-height:1.45; margin:0; color:var(--walnut)}
+  .qt__text::before{content:"\""; font-family:var(--slab); font-weight:900; font-size:2.5rem; color:var(--terracotta); line-height:0; vertical-align:-0.5em; margin-right:.25rem}
+  .qt__attr{font-size:.8125rem; color:var(--muted); padding-top:.75rem; border-top:1px dashed var(--line-2); display:flex; justify-content:space-between}
+  .qt__attr cite{font-style:normal; font-weight:700; color:var(--walnut)}
+
+  /* ───── Why us ───── */
+  .reasons{display:grid; gap:1rem; grid-template-columns:1fr}
+  @media (min-width:760px){ .reasons{grid-template-columns:repeat(3,1fr)} }
+  .reason{
+    background:var(--cream); border:2px solid var(--walnut); border-radius:14px;
+    padding:1.5rem; box-shadow:0 6px 0 var(--walnut);
+    display:flex; flex-direction:column; gap:.75rem;
+  }
+  .reason__icon{
+    width:48px; height:48px; background:var(--paper-2); border:2px solid var(--walnut); border-radius:12px;
+    display:grid; place-items:center; font-size:1.25rem;
+  }
+  .reason__h{font-family:var(--slab); font-weight:900; font-size:1.125rem; margin:0}
+  .reason__p{color:var(--ink-soft); margin:0; font-size:.9375rem}
+
+  /* ───── Service area ───── */
+  .area{
+    background:var(--walnut); color:var(--cream); border-radius:18px;
+    padding:clamp(2rem,4vw,3rem); display:grid; gap:2rem; grid-template-columns:1fr;
+    position:relative; overflow:hidden;
+  }
+  .area::before{
+    content:"★"; position:absolute; right:-20px; top:-30px; font-size:14rem;
+    color:var(--terracotta); opacity:0.18; line-height:1;
+  }
+  @media (min-width:760px){ .area{grid-template-columns:1fr 1.3fr} }
+  .area__lead{color:rgba(251,246,236,.75); margin-top:.75rem; max-width:32ch}
+  .area__h{font-family:var(--slab); font-weight:900; font-size:clamp(1.75rem,3vw,2.5rem); line-height:1.05; margin:.5rem 0 0; color:var(--cream)}
+  .area__h em{font-style:normal; color:var(--brass)}
+  .area__cities{
+    list-style:none; padding:0; margin:0; display:grid; gap:.5rem;
+    grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+  }
+  .area__cities li{
+    background:rgba(251,246,236,.06); border:1px solid rgba(251,246,236,.15);
+    padding:.7rem 1rem; border-radius:8px;
+    display:flex; gap:.5rem; align-items:baseline; font-family:var(--slab); font-weight:500; font-size:1.0625rem;
+  }
+  .area__cities li::before{content:"★"; color:var(--brass); font-size:.8rem}
+
+  /* ───── Crew ───── */
+  .crew{display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .crew__item{background:var(--cream); border:2px solid var(--walnut); border-radius:14px; overflow:hidden; box-shadow:0 6px 0 var(--walnut)}
+  .crew__item img{width:100%; aspect-ratio:4/5; object-fit:cover}
+  .crew__cap{padding:1rem 1.25rem}
+  .crew__name{font-family:var(--slab); font-weight:900; font-size:1.125rem}
+  .crew__role{display:block; color:var(--ink-soft); font-style:italic; font-size:.875rem; margin-top:.25rem; font-family:var(--slab)}
+
+  /* ───── Quote CTA ───── */
+  .quote{
+    background:linear-gradient(135deg, var(--terracotta), var(--brass)); color:var(--cream);
+    border-radius:20px; padding:clamp(2.5rem,5vw,4rem) var(--pad); text-align:center;
+    border:3px solid var(--walnut); box-shadow:0 12px 0 var(--walnut); position:relative; overflow:hidden;
+  }
+  .quote::before, .quote::after{
+    content:"★"; position:absolute; font-size:8rem; color:rgba(255,255,255,0.1); line-height:1;
+  }
+  .quote::before{top:-1rem; left:-1rem; transform:rotate(-15deg)}
+  .quote::after{bottom:-2rem; right:-1rem; transform:rotate(20deg)}
+  .quote__h{font-family:var(--slab); font-weight:900; font-size:clamp(2rem,4vw,3rem); line-height:1.05; margin:.5rem 0 1rem; color:var(--cream)}
+  .quote__p{margin:0 auto 2rem; max-width:50ch; color:rgba(251,246,236,.9)}
+  .quote .btn--solid{background:var(--cream); color:var(--walnut); box-shadow:0 6px 0 var(--walnut)}
+  .quote .btn--solid:hover{background:var(--paper); transform:translateY(2px); box-shadow:0 4px 0 var(--walnut)}
+
+  /* ───── FAQ ───── */
+  .faqs{display:grid; gap:.75rem}
+  .faq{background:var(--cream); border:2px solid var(--walnut); border-radius:10px; padding:0; overflow:hidden}
+  .faq summary{
+    list-style:none; cursor:pointer; padding:1rem 1.25rem;
+    display:flex; justify-content:space-between; align-items:center; gap:1rem;
+    font-family:var(--slab); font-weight:700; font-size:1.0625rem;
+    transition:background 200ms ease;
+  }
+  .faq summary:hover{background:var(--paper-2)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq__plus{font-family:var(--slab); font-weight:900; color:var(--terracotta); font-size:1.5rem; transition:transform 200ms ease; line-height:1}
+  .faq[open] .faq__plus{transform:rotate(45deg)}
+  .faq p{padding:0 1.25rem 1.25rem; color:var(--ink-soft); margin:0; max-width:65ch}
+
+  /* ───── Final CTA ───── */
+  .final{text-align:center; padding-block:var(--gap)}
+  .final__h{font-family:var(--slab); font-weight:900; font-size:clamp(2.5rem,6vw,4.5rem); line-height:1.02; max-width:18ch; margin:0 auto 1rem; letter-spacing:-0.02em}
+  .final__h em{font-style:normal; color:var(--terracotta)}
+  .final__sub{color:var(--ink-soft); max-width:48ch; margin:0 auto 2rem}
+
+  /* ───── Footer ───── */
+  .foot{background:var(--walnut); color:var(--cream); padding-block:3rem 1.5rem}
+  .foot__top{display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .foot__brand{font-family:var(--slab); font-weight:900; font-size:1.25rem; display:flex; align-items:center; gap:.5rem}
+  .foot__brand .star{color:var(--terracotta)}
+  .foot__h{font-family:var(--slab); font-weight:700; font-size:.875rem; letter-spacing:.08em; text-transform:uppercase; color:var(--brass); margin:0 0 .5rem}
+  .foot__list{list-style:none; padding:0; margin:0; font-size:.9375rem; color:rgba(251,246,236,.85)}
+  .foot__list li{padding-block:.25rem}
+  .foot__legal{margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(251,246,236,.15); display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; font-size:.8125rem; color:rgba(251,246,236,.6)}
+  .foot__legal a{border-bottom:1px solid currentColor}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition-duration:.01ms !important; animation-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__row">
+    <a class="top__brand" href="/styles/"><span class="star">★</span>Rivadeneira <span style="color:var(--ink-soft); font-weight:500">Home Improvement</span></a>
+    <nav class="top__nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="top__cta" href="tel:+15550100100">(555) 010-0100</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero__inner">
+      <div>
+        <span class="eye">Howdy from north Houston</span>
+        <h1 class="hero__h"><span class="hand">good folks build</span>Renovations done <em>right</em>, on time, on budget.</h1>
+        <p class="hero__sub">Painting, decking, flooring and more — handled by a licensed crew that shows up, communicates, and stands behind the work.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--solid" href="#quote">Get my quote</a>
+          <a class="btn btn--ghost" href="tel:+15550100100">Call (555) 010-0100</a>
+        </div>
+      </div>
+      <figure style="margin:0; position:relative">
+        <span class="hero__sticker"><span class="big">12+</span><span class="small">years in the area</span></span>
+        <img src="/images/hero.jpg" alt="A freshly renovated home interior">
+      </figure>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust">
+    <div class="wrap trust__row">
+      <span><b>12+ years</b> in the area</span><span class="sep">★</span>
+      <span><b>Licensed</b> &amp; insured</span><span class="sep">★</span>
+      <span><b>Free</b> written quotes</span><span class="sep">★</span>
+      <span><b>Locally</b> owned</span><span class="sep">★</span>
+      <span><b>Workmanship</b> warranty</span>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section wrap">
+    <header class="section__head">
+      <span class="eye">What we do</span>
+      <h2 class="section__h">Three things we do <em>real well.</em></h2>
+      <p class="section__lede">Don't see what you need? Give us a holler — we may still be able to help. If not, we'll point you toward the right neighbor.</p>
+    </header>
+
+    <div class="svcs">
+      <article class="svc">
+        <img class="svc__img" src="/images/services/interior-paint.jpg" alt="">
+        <div class="svc__body">
+          <span class="svc__no">number one</span>
+          <h3 class="svc__h">Interior painting</h3>
+          <p class="svc__p">Premium low-VOC paints. Full prep, repairs, and clean-up. Same-day livable.</p>
+          <ul class="svc__list">
+            <li>Premium low-VOC paint</li>
+            <li>Furniture protection</li>
+            <li>Same-day cleanup</li>
+          </ul>
+        </div>
+      </article>
+      <article class="svc">
+        <img class="svc__img" src="/images/services/deck-rebuild.jpg" alt="">
+        <div class="svc__body">
+          <span class="svc__no">number two</span>
+          <h3 class="svc__h">Deck rebuild &amp; repair</h3>
+          <p class="svc__p">Wooden or composite. Structural assessment, hardware, stain &amp; seal — all on a written timeline.</p>
+          <ul class="svc__list">
+            <li>Composite or hardwood</li>
+            <li>Structural inspection</li>
+            <li>Stain &amp; seal</li>
+          </ul>
+        </div>
+      </article>
+      <article class="svc">
+        <img class="svc__img" src="/images/services/flooring.jpg" alt="">
+        <div class="svc__body">
+          <span class="svc__no">number three</span>
+          <h3 class="svc__h">Flooring installation</h3>
+          <p class="svc__p">Full-room replacement: subfloor prep, transitions, trim. Level and seamless.</p>
+          <ul class="svc__list">
+            <li>Tile, laminate, hardwood</li>
+            <li>Subfloor leveling</li>
+            <li>Trim &amp; transitions</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="ornament"><svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true"><path d="M14 0l3 11h11l-9 6.5 3.5 10.5L14 21.5 5.5 28 9 17.5 0 11h11z"/></svg></div></div>
+
+  <!-- BEFORE/AFTER -->
+  <section class="section wrap">
+    <header class="section__head">
+      <span class="eye">Recent jobs</span>
+      <h2 class="section__h">Before, <em>and after.</em></h2>
+      <p class="section__lede">Final walk-through photos from real homes across the north-Houston suburbs.</p>
+    </header>
+    <div class="ba">
+      <article class="ba__item">
+        <div class="ba__row">
+          <div class="ba__half"><span class="ba__lbl">BEFORE</span><img src="/images/before-after/deck-before.jpg" alt=""></div>
+          <div class="ba__half"><span class="ba__lbl ba__lbl--after">AFTER</span><img src="/images/before-after/deck-after.jpg" alt=""></div>
+        </div>
+        <p class="ba__cap"><b>Cedar deck rebuild — The Woodlands.</b> Five-day turnaround, posts replaced, composite railings, custom-stained cedar.</p>
+      </article>
+      <article class="ba__item">
+        <div class="ba__row">
+          <div class="ba__half"><span class="ba__lbl">BEFORE</span><img src="/images/before-after/kitchen-before.jpg" alt=""></div>
+          <div class="ba__half"><span class="ba__lbl ba__lbl--after">AFTER</span><img src="/images/before-after/kitchen-after.jpg" alt=""></div>
+        </div>
+        <p class="ba__cap"><b>Full kitchen refresh — Conroe.</b> Quartz counters, white shaker cabinet refits, subway-tile backsplash. Two weeks, on schedule.</p>
+      </article>
+      <article class="ba__item">
+        <div class="ba__row">
+          <div class="ba__half"><span class="ba__lbl">BEFORE</span><img src="/images/before-after/floor-before.jpg" alt=""></div>
+          <div class="ba__half"><span class="ba__lbl ba__lbl--after">AFTER</span><img src="/images/before-after/floor-after.jpg" alt=""></div>
+        </div>
+        <p class="ba__cap"><b>Engineered hardwood install — Tomball.</b> Worn laminate removed, subfloor leveled, wide-plank white-oak throughout.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="ornament"><svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true"><path d="M14 0l3 11h11l-9 6.5 3.5 10.5L14 21.5 5.5 28 9 17.5 0 11h11z"/></svg></div></div>
+
+  <!-- PROCESS -->
+  <section id="process" class="section wrap">
+    <header class="section__head">
+      <span class="eye">How it works</span>
+      <h2 class="section__h">From the first call to the <em>final handshake.</em></h2>
+    </header>
+    <div class="proc">
+      <article class="proc__step"><span class="proc__n">1</span><h3 class="proc__h">Tell us about your project</h3><p class="proc__p">Use the form or call us. Share photos — helps us estimate accurately.</p></article>
+      <article class="proc__step"><span class="proc__n">2</span><h3 class="proc__h">Get a detailed PDF quote</h3><p class="proc__p">Written quote with scope, materials, timeline, fixed price — within 24 hours.</p></article>
+      <article class="proc__step"><span class="proc__n">3</span><h3 class="proc__h">We do the work</h3><p class="proc__p">Same crew, daily progress photos, on schedule. We don't subcontract.</p></article>
+      <article class="proc__step"><span class="proc__n">4</span><h3 class="proc__h">Walk through &amp; sign off</h3><p class="proc__p">Not done until you're thrilled. Workmanship warranty in writing.</p></article>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews" class="section wrap">
+    <header class="section__head">
+      <span class="eye">From the neighbors</span>
+      <h2 class="section__h">"They showed up on time. <em>They did what they said.</em>"</h2>
+    </header>
+    <div class="reviews">
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">Rivadeneira rebuilt our deck in three days. The crew was respectful, on time, and the finish is gorgeous. Highly recommend.</p>
+        <div class="qt__attr"><cite>María R.</cite><span>The Woodlands</span></div>
+      </blockquote>
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">Repainted three rooms and the trim. Zero overspray, no mess left behind, and the price matched the quote exactly.</p>
+        <div class="qt__attr"><cite>Carlos M.</cite><span>Conroe</span></div>
+      </blockquote>
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">Replaced our kitchen flooring on a tight deadline. Communication was excellent throughout.</p>
+        <div class="qt__attr"><cite>Lucía F.</cite><span>Tomball</span></div>
+      </blockquote>
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">Quoted multiple companies — Rivadeneira was the only one to show up on time for the estimate and the only one who delivered.</p>
+        <div class="qt__attr"><cite>Diego A.</cite><span>Montgomery</span></div>
+      </blockquote>
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">The PDF quote was clear, fair, and detailed. The job came in under budget. Will use them again.</p>
+        <div class="qt__attr"><cite>Sofía B.</cite><span>Willis</span></div>
+      </blockquote>
+      <blockquote class="qt">
+        <span class="qt__stars">★★★★★</span>
+        <p class="qt__text">Tile work in our bathroom — flawless. They even noticed a hidden plumbing issue and helped us address it.</p>
+        <div class="qt__attr"><cite>Ricardo P.</cite><span>The Woodlands</span></div>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section wrap">
+    <header class="section__head">
+      <span class="eye">Why folks choose us</span>
+      <h2 class="section__h">Built on the things that <em>actually matter.</em></h2>
+    </header>
+    <div class="reasons">
+      <article class="reason"><span class="reason__icon">🛡</span><h3 class="reason__h">Licensed &amp; insured</h3><p class="reason__p">Full liability coverage and workers comp. We protect you on every job.</p></article>
+      <article class="reason"><span class="reason__icon">⏱</span><h3 class="reason__h">On time, on budget</h3><p class="reason__p">Detailed quotes, written timelines, daily updates. No surprises.</p></article>
+      <article class="reason"><span class="reason__icon">🏆</span><h3 class="reason__h">12+ years local</h3><p class="reason__p">Hundreds of homes improved across the north-Houston area.</p></article>
+      <article class="reason"><span class="reason__icon">✦</span><h3 class="reason__h">Quality guarantee</h3><p class="reason__p">We don't leave until you're thrilled. Workmanship warranty included.</p></article>
+      <article class="reason"><span class="reason__icon">📷</span><h3 class="reason__h">Transparent process</h3><p class="reason__p">Photo updates daily so you always know what's happening — even if you're away.</p></article>
+      <article class="reason"><span class="reason__icon">🧹</span><h3 class="reason__h">Clean job sites</h3><p class="reason__p">We protect your floors, contain dust, and leave the site cleaner than we found it.</p></article>
+    </div>
+  </section>
+
+  <!-- AREA -->
+  <section class="section wrap">
+    <div class="area">
+      <div>
+        <span class="eye" style="color:var(--brass)">★ Service area</span>
+        <h3 class="area__h">Five towns. <em>One promise.</em></h3>
+        <p class="area__lead">We focus on the wooded north-Houston suburbs. Not sure if we cover you? Submit a quote — we'll tell you either way.</p>
+      </div>
+      <ul class="area__cities">
+        <li>The Woodlands</li>
+        <li>Conroe</li>
+        <li>Willis</li>
+        <li>Tomball</li>
+        <li>Montgomery</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CREW -->
+  <section class="section wrap">
+    <header class="section__head">
+      <span class="eye">The crew</span>
+      <h2 class="section__h">Same faces, <em>every day.</em></h2>
+      <p class="section__lede">We don't subcontract. The folks you meet on quote day are the folks you'll see on every job day.</p>
+    </header>
+    <div class="crew">
+      <figure class="crew__item" style="margin:0"><img src="/images/crew/owner.jpg" alt=""><figcaption class="crew__cap"><span class="crew__name">Juan Rivadeneira</span><span class="crew__role">Owner &amp; lead carpenter</span></figcaption></figure>
+      <figure class="crew__item" style="margin:0"><img src="/images/crew/foreman.jpg" alt=""><figcaption class="crew__cap"><span class="crew__name">Sara Vega</span><span class="crew__role">Project manager</span></figcaption></figure>
+      <figure class="crew__item" style="margin:0"><img src="/images/crew/painter.jpg" alt=""><figcaption class="crew__cap"><span class="crew__name">Mateo Solís</span><span class="crew__role">Lead painter</span></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- QUOTE CTA -->
+  <section id="quote" class="section wrap">
+    <div class="quote">
+      <span class="eye" style="color:var(--cream); position:relative; z-index:1">Free, written, same-day</span>
+      <h3 class="quote__h" style="position:relative; z-index:1">Tell us about your project. We'll send you a real quote — today.</h3>
+      <p class="quote__p" style="position:relative; z-index:1">Snap a few photos. Share a few details. We'll come back with scope, materials, timeline, and a fixed written price.</p>
+      <a class="btn btn--solid" href="#" style="position:relative; z-index:1">Request my quote</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section wrap">
+    <header class="section__head">
+      <span class="eye">Frequently asked</span>
+      <h2 class="section__h">The questions we hear <em>most often.</em></h2>
+    </header>
+    <div class="faqs">
+      <details class="faq"><summary>Do you offer free quotes?<span class="faq__plus">+</span></summary><p>Yes — every quote is free and there's no obligation to book. Use the form on this page or call us; we'll typically reply within one business day.</p></details>
+      <details class="faq"><summary>Are you licensed and insured?<span class="faq__plus">+</span></summary><p>Yes. We're a fully licensed contractor and carry liability insurance up to $2M, plus workers' compensation. Documentation is available on request.</p></details>
+      <details class="faq"><summary>How long does a typical project take?<span class="faq__plus">+</span></summary><p>It depends on scope. A single-room repaint is usually 1–2 days, a deck rebuild 3–5 days, and flooring varies by area. The quote includes a written timeline.</p></details>
+      <details class="faq"><summary>Do I need to be home during the work?<span class="faq__plus">+</span></summary><p>Not necessarily. Many of our customers give us a key or smart-lock code. We send a daily progress update with photos either way.</p></details>
+      <details class="faq"><summary>What's your payment schedule?<span class="faq__plus">+</span></summary><p>Typically: small deposit on signing, milestone payment at midpoint, final payment on completion and walk-through. Bank transfer and credit cards accepted.</p></details>
+      <details class="faq"><summary>What if I'm not happy with the work?<span class="faq__plus">+</span></summary><p>We won't consider the job done until you've walked through and signed off. If there's an issue after, we come back and fix it — covered by our workmanship warranty.</p></details>
+      <details class="faq"><summary>Do you handle permits?<span class="faq__plus">+</span></summary><p>When permits are required, we handle the application and inspection scheduling and roll the cost into the quote.</p></details>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final wrap">
+    <h2 class="final__h">Ready to <em>get started?</em></h2>
+    <p class="final__sub">Get a free, no-pressure quote in minutes — or just give us a call.</p>
+    <div class="hero__ctas" style="justify-content:center">
+      <a class="btn btn--solid" href="#quote">Request my quote</a>
+      <a class="btn btn--ghost" href="tel:+15550100100">Call (555) 010-0100</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div>
+        <div class="foot__brand"><span class="star">★</span>Rivadeneira</div>
+        <p style="color:rgba(251,246,236,.7); margin:.5rem 0 0; max-width:32ch">Renovations done right, on time, and on budget.</p>
+      </div>
+      <div><h4 class="foot__h">Contact</h4><ul class="foot__list"><li><a href="tel:+15550100100">(555) 010-0100</a></li><li><a href="mailto:hello@rivadeneirahi.example">hello@rivadeneirahi.example</a></li></ul></div>
+      <div><h4 class="foot__h">Service area</h4><p style="color:rgba(251,246,236,.85); margin:0">The Woodlands · Conroe · Willis · Tomball · Montgomery</p></div>
+      <div><h4 class="foot__h">Hours</h4><p style="color:rgba(251,246,236,.85); margin:0">Mon – Sat<br>7:00 a.m. – 6:00 p.m.</p></div>
+    </div>
+    <div class="foot__legal">
+      <span>© Rivadeneira Home Improvement</span>
+      <a href="/styles/">← Style picker</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
