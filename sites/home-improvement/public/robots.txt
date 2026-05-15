@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://myhomeimprovementcompany.com/sitemap-index.xml
+Sitemap: https://raul1.dev.marin.cr/sitemap-index.xml

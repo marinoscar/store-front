@@ -5,16 +5,21 @@
 # Tail logs:   docker compose logs -f api
 # Tear down:   docker compose down
 #
-# Each static-* service serves one business's built Astro `dist/` directory
-# behind a minimal nginx-alpine container. The `api` service hosts the shared
-# Fastify backend. All three join the existing `proxy` external network so
-# the system Nginx in /opt/infra/proxy/ can route to them by container name.
+# Architecture:
+#   - Each per-site nginx container serves its business's Astro dist/ AND
+#     proxies /api/* to the shared `store-front-api` container.
+#   - The host nginx (in /opt/infra/proxy/) routes by hostname:
+#       raul1.marin.cr → 127.0.0.1:8321  (this stack's raul1 container)
+#       raul2.marin.cr → 127.0.0.1:8322  (this stack's raul2 container)
+#   - All inter-container traffic stays on the internal `store-front-net`
+#     network. The api container has no host port — only the per-site routers
+#     reach it, by docker DNS over store-front-net.
 
 name: store-front
 
 networks:
-  proxy:
-    external: true
+  store-front-net:
+    driver: bridge
 
 services:
   api:
@@ -23,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: store-front-api
     restart: unless-stopped
-    networks: [proxy]
+    networks: [store-front-net]
     env_file: .env
     volumes:
       - ./sites.config.json:/app/sites.config.json:ro
@@ -38,24 +43,40 @@ services:
       retries: 3
       start_period: 10s
 
-  static-home-improvement:
+  raul1:
     image: nginx:1.27-alpine
-    container_name: store-front-home-improvement
+    container_name: store-front-raul1
     restart: unless-stopped
-    networks: [proxy]
+    networks: [store-front-net]
     volumes:
       - ../sites/home-improvement/dist:/usr/share/nginx/html:ro
-      - ./nginx-site.conf.template:/etc/nginx/conf.d/default.conf:ro
-    expose:
-      - "80"
+      - ./site.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "127.0.0.1:8324:80"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/nginx-health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
 
-  static-pressure-washing:
+  raul2:
     image: nginx:1.27-alpine
-    container_name: store-front-pressure-washing
+    container_name: store-front-raul2
     restart: unless-stopped
-    networks: [proxy]
+    networks: [store-front-net]
     volumes:
       - ../sites/pressure-washing/dist:/usr/share/nginx/html:ro
-      - ./nginx-site.conf.template:/etc/nginx/conf.d/default.conf:ro
-    expose:
-      - "80"
+      - ./site.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "127.0.0.1:8325:80"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/nginx-health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3

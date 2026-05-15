@@ -1,90 +1,100 @@
 # Deploy
 
-How to bring the stack up on the VPS, and how to add a new business once it's running.
+Two-tier routing pattern matching `marinoscar/clipboard/docs/ssl-nginx-setup.md`:
+
+```
+Internet → host Nginx (TLS, *.marin.cr wildcard)
+        → map by hostname to 127.0.0.1:8324 or 8322
+        → per-site Docker Nginx (static dist + /api/ → backend)
+        → store-front-api (shared Fastify backend)
+```
 
 ## Target paths on the VPS
 
-| Where | What |
+| Path | Purpose |
 |---|---|
-| `/opt/infra/proxy/` | System Nginx + Let's Encrypt (already configured) |
-| `/opt/infra/proxy/nginx/conf.d/` | Per-domain vhost configs |
-| `/opt/infra/proxy/letsencrypt/` | TLS certificate store |
-| `/opt/infra/proxy/webroot/` | ACME challenge directory |
+| `/opt/infra/proxy/` | System Nginx + Let's Encrypt (already running) |
+| `/opt/infra/proxy/nginx/conf.d/raul-sites.conf` | This stack's host-level vhost (installed from `deploy/raul-sites.conf`) |
+| `/opt/infra/proxy/letsencrypt/live/marin.cr/` | Wildcard `*.marin.cr` TLS cert (already issued) |
 | `/opt/infra/apps/store-front/` | This repo (clone target) |
 | `/opt/infra/apps/store-front/deploy/.env` | Real backend secrets (NOT git-tracked) |
 | `/opt/infra/apps/store-front/deploy/sites.config.json` | Real per-site config (NOT git-tracked) |
 
+## Domain map
+
+| Site | Domain | Host-bound port |
+|---|---|---|
+| Home improvement | `raul1.dev.marin.cr` | `127.0.0.1:8324` |
+| Pressure washing | `raul2.dev.marin.cr` | `127.0.0.1:8325` |
+
 ## First-time deploy
 
-1. **Clone** the repo onto the VPS:
+1. **DNS** — point A records for `raul1.dev.marin.cr` and `raul2.dev.marin.cr` at the VPS IP. Wait until they resolve (`dig +short raul1.dev.marin.cr`).
+
+2. **Clone** the repo:
    ```bash
    cd /opt/infra/apps
    git clone <repo-url> store-front
    cd store-front
    ```
 
-2. **Build the sites** locally (or on the VPS — same result):
+3. **Build the static sites**:
    ```bash
    pnpm install
    pnpm -r build
    ```
-   Output goes to `sites/<business>/dist/` for each site.
+   Each site emits to `sites/<business>/dist/`.
 
-3. **Create production config** files (not in git):
+4. **Create production config** files (not in git):
    ```bash
    cp deploy/.env.example deploy/.env
    cp deploy/sites.config.example.json deploy/sites.config.json
-   $EDITOR deploy/.env                 # fill in SMTP, OpenAI, AWS, geocoder keys
-   $EDITOR deploy/sites.config.json    # match production domains, contacts, pricing
+   $EDITOR deploy/.env                 # SMTP, OpenAI, AWS, geocoder keys
+   $EDITOR deploy/sites.config.json    # owner emails, pricing rules, service areas, PDF themes
    ```
 
-4. **Make sure the `proxy` external network exists** (created by the system Nginx stack):
-   ```bash
-   docker network ls | grep proxy   # should show 'proxy' (external)
-   ```
-
-5. **Bring up the stack**:
+5. **Bring up the docker stack**:
    ```bash
    cd deploy
    docker compose up -d --build
-   docker compose ps           # all three should be Up + healthy
-   curl http://store-front-api:3000/api/health   # from another container on the proxy net, or skip
+   docker compose ps          # api, raul1, raul2 — all Up + healthy
    ```
 
-6. **Add a vhost per domain** to the system Nginx. For each site:
+   Quick check that the per-site routers respond locally:
    ```bash
-   # On the VPS
-   cp /opt/infra/apps/store-front/deploy/proxy-vhost.template.conf \
-      /opt/infra/proxy/nginx/conf.d/myhomeimprovementcompany.com.conf
-
-   # Substitute placeholders
-   sed -i 's/{{DOMAIN}}/myhomeimprovementcompany.com/g' \
-          /opt/infra/proxy/nginx/conf.d/myhomeimprovementcompany.com.conf
-   sed -i 's/{{STATIC_CONTAINER}}/store-front-home-improvement/g' \
-          /opt/infra/proxy/nginx/conf.d/myhomeimprovementcompany.com.conf
+   curl http://127.0.0.1:8324/nginx-health   # → ok
+   curl http://127.0.0.1:8325/nginx-health   # → ok
+   curl http://127.0.0.1:8324/api/health     # → {"ok":true}  (proxied to api)
    ```
 
-   Repeat for `mypressurewashingcompany.com` with container `store-front-pressure-washing`.
-
-7. **Issue TLS certs**:
+6. **Install the host Nginx vhost**:
    ```bash
-   certbot certonly --webroot -w /opt/infra/proxy/webroot/ \
-     -d myhomeimprovementcompany.com
-   certbot certonly --webroot -w /opt/infra/proxy/webroot/ \
-     -d mypressurewashingcompany.com
+   sudo cp /opt/infra/apps/store-front/deploy/raul-sites.conf \
+           /opt/infra/proxy/nginx/conf.d/raul-sites.conf
    ```
 
-8. **Validate and reload** the system Nginx:
+   Confirm the wildcard cert path is correct on this host (the file assumes
+   `/opt/infra/proxy/letsencrypt/live/marin.cr/`). If the cert lives elsewhere,
+   edit the `ssl_certificate*` lines in the installed file.
+
+7. **Validate and reload** the system Nginx:
    ```bash
-   docker exec proxy nginx -t
+   docker exec proxy nginx -t          # or: sudo nginx -t  (depends on your setup)
    docker exec proxy nginx -s reload
    ```
 
-9. **Smoke test** in a browser:
-   - Load each domain over HTTPS, confirm the marketing page renders
-   - Open the chatbot bubble, ask a question, confirm streaming response
-   - Walk the quote wizard to completion with test data
-   - Check that the PDF arrives by email and lives at `s3://<bucket>/quotes/<id>/quote.pdf`
+8. **Smoke test** from outside the VPS:
+   ```bash
+   curl -I https://raul1.dev.marin.cr/                # 200 OK + TLS
+   curl -I https://raul2.dev.marin.cr/                # 200 OK + TLS
+   curl  https://raul1.dev.marin.cr/api/health        # {"ok":true}
+   ```
+
+   Then in a browser:
+   - Load each site; confirm the marketing page renders and the wizard mounts
+   - Open the chatbot bubble; confirm streaming response
+   - Walk the quote wizard end-to-end with test data; confirm email + PDF arrive
+   - Check S3 for `quotes/<id>/quote.pdf` and `quotes/<id>/uploads/...`
 
 ## Routine deploys
 
@@ -97,37 +107,73 @@ cd deploy
 docker compose up -d --build
 ```
 
-That rebuilds the static dist directories and the api container. The bind-mounts pick up the new `dist/` immediately; the api container restarts with the new image.
+Static `dist/` directories are bind-mounted, so the new build is picked up by the per-site routers immediately on the next request. The api container restarts with the new image.
 
-## Adding a new business
+If `deploy/raul-sites.conf` itself changes:
+```bash
+sudo cp deploy/raul-sites.conf /opt/infra/proxy/nginx/conf.d/raul-sites.conf
+docker exec proxy nginx -t && docker exec proxy nginx -s reload
+```
 
-1. **Create the site folder** in the repo:
+## Adding a new business under `*.marin.cr`
+
+The wildcard cert means no new TLS issuance is needed. Steps:
+
+1. **Pick a free port** in the 832x range (current: 8321, 8322 in use; doc convention: 8320+ reserved for app containers).
+2. **Copy a site folder** in the repo and customize:
    ```bash
    cp -r sites/home-improvement sites/<new-business>
    ```
-2. **Edit** `sites/<new-business>/`:
-   - `package.json` — change `name` and the dev port
-   - `astro.config.mjs` — set the production `SITE_URL`
-   - `src/content/*.json` — brand, services, reviews, FAQ, process
-   - `src/styles/theme.css` — new color palette
-   - `public/images/` — replace all placeholders
-   - `public/favicon.svg`, `public/robots.txt`
-3. **Add a service block** to `deploy/compose.yml`, mirroring an existing `static-*` service. Use a unique `container_name`.
-4. **Add a domain entry** to `deploy/sites.config.json` on the VPS (brand, owner email, chat prompt, pricing, service area, PDF theme).
-5. **Update `ALLOWED_ORIGINS`** in `deploy/.env` on the VPS to include the new domain (with `https://`).
-6. **Add a vhost** in `/opt/infra/proxy/nginx/conf.d/`, run certbot, reload nginx (steps 6–8 above).
+   Edit `package.json`, `astro.config.mjs` (SITE_URL), `src/content/*.json`, `src/styles/theme.css`, `public/images/`, `public/favicon.svg`, `public/robots.txt`.
+3. **Add a service block** to `deploy/compose.yml` mirroring `raul1`. Use a unique `container_name` and bind to `127.0.0.1:<new-port>:80`.
+4. **Add a line** to the `map` block in `deploy/raul-sites.conf`:
+   ```nginx
+   map $host $store_front_port {
+       raul1.dev.marin.cr   8321;
+       raul2.dev.marin.cr   8322;
+       newsite.marin.cr 8323;
+   }
+   ```
+   And add the new host to both `server_name` directives in that file.
+5. **Add a domain entry** to `deploy/sites.config.json` (owner email, chat prompt, pricing rules, service area, PDF theme).
+6. **Update `ALLOWED_ORIGINS`** in `deploy/.env` to include `https://<newdomain>` (comma-separated).
 7. **Deploy**:
    ```bash
    git pull && pnpm install && pnpm -r build && cd deploy && docker compose up -d --build
+   sudo cp deploy/raul-sites.conf /opt/infra/proxy/nginx/conf.d/raul-sites.conf
+   docker exec proxy nginx -t && docker exec proxy nginx -s reload
    ```
+8. **Point DNS** for the new subdomain at the VPS.
+
+Total: ~10 min once the template is solid.
+
+## If the wildcard cert does NOT exist yet
+
+The plan assumes `*.marin.cr` is already issued (per the doc, via DNS challenge with Route53). If it isn't, you have two options:
+
+**Option A — issue a wildcard** (preferred; one cert for all subdomains):
+```bash
+sudo certbot certonly --dns-route53 --key-type ecdsa \
+  -d "*.marin.cr" -d "marin.cr"
+```
+
+**Option B — per-domain cert via HTTP challenge** (works without DNS API access):
+Temporarily add an HTTP-01 challenge block to `raul-sites.conf`, then:
+```bash
+certbot certonly --webroot -w /opt/infra/proxy/webroot/ -d raul1.dev.marin.cr
+certbot certonly --webroot -w /opt/infra/proxy/webroot/ -d raul2.dev.marin.cr
+```
+Then edit the `ssl_certificate*` paths in `raul-sites.conf` to point at the per-domain cert dirs.
 
 ## Troubleshooting
 
 | Symptom | Where to look |
 |---|---|
-| Wizard upload fails | `docker compose logs api`, check `S3_*` and `AWS_*` env vars; verify the IAM key has `s3:PutObject` on the bucket |
-| Chat returns 403 | Origin mismatch — confirm the domain is in `ALLOWED_ORIGINS` and in `sites.config.json` |
-| Chat returns 500 | Check `OPENAI_API_KEY` and account balance; logs include the OpenAI error |
-| Submit succeeds but no email | SMTP creds; test by `docker compose logs api` for `sendQuoteEmail` errors |
-| Static page is 502 | The static-* container isn't running or isn't on the `proxy` network. `docker compose ps`, `docker network inspect proxy` |
-| Cert renewal failing | Confirm `webroot` mount and that the HTTP-only vhost block above is in place to serve `/.well-known/acme-challenge/` |
+| `502` / `connection refused` from host | `docker compose ps` — is the per-site container Up on `127.0.0.1:832x`? `ss -tlnp` on the host |
+| `444` returned | Subdomain isn't in the `map` block — only configured hosts are routed |
+| Chat returns `403` | `ALLOWED_ORIGINS` in `deploy/.env` doesn't include the requesting domain |
+| Chat returns `500` | `docker compose logs api` — usually `OPENAI_API_KEY` missing or invalid |
+| Upload sign returns `500` | AWS keys / region / bucket misconfigured in `deploy/.env`; container needs `s3:PutObject`/`GetObject`/`HeadObject` on the bucket |
+| Email never arrives | SMTP keys in `deploy/.env`; logs from the `quote` route |
+| Static page is 404 | Wrong bind-mount in compose — confirm `sites/<business>/dist/` exists after `pnpm -r build` |
+| Cert renewal failing | Wildcard certs renew via DNS challenge (systemd timer); `sudo systemctl status certbot.timer` + `sudo certbot renew --dry-run` |

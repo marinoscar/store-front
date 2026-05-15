@@ -1,5 +1,5 @@
 {
-  "myhomeimprovementcompany.com": {
+  "raul1.dev.marin.cr": {
     "brandName": "Acme Home Improvement",
     "ownerEmail": "owner@acmehi.example",
     "phone": "+1-555-0100",
@@ -13,10 +13,10 @@
     "pdfTheme": {
       "primary": "#1d4ed8",
       "accent": "#f97316",
-      "logoS3Key": "branding/myhomeimprovementcompany.com/logo.png"
+      "logoS3Key": "branding/raul1.dev.marin.cr/logo.png"
     }
   },
-  "mypressurewashingcompany.com": {
+  "raul2.dev.marin.cr": {
     "brandName": "BlueWave Pressure Washing",
     "ownerEmail": "owner@bluewavepw.example",
     "phone": "+1-555-0101",
@@ -30,7 +30,7 @@
     "pdfTheme": {
       "primary": "#0e7490",
       "accent": "#fbbf24",
-      "logoS3Key": "branding/mypressurewashingcompany.com/logo.png"
+      "logoS3Key": "branding/raul2.dev.marin.cr/logo.png"
     }
   }
 }

@@ -1,32 +1,25 @@
 # syntax=docker/dockerfile:1.7
+#
+# Runtime-only image: relies on the host having already run `pnpm -r build`
+# to produce ./dist. We install production deps in the container (flat node_modules
+# via npm — pnpm workspace symlinks don't translate cleanly into Docker), then
+# `node dist/server.js`.
 
-# ---------- Builder ----------
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
-
-COPY package.json tsconfig.json ./
-RUN pnpm install --no-frozen-lockfile --prod=false
-
-COPY src ./src
-RUN pnpm run build
-
-# Remove dev deps from the install for the runtime stage
-RUN pnpm prune --prod
-
-# ---------- Runtime ----------
-FROM node:20-alpine AS runtime
+FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 
-RUN addgroup -S app && adduser -S app -G app
+# Production dependencies only. Flat tree, no workspace symlinks.
+COPY package.json ./
+RUN npm install --omit=dev --no-audit --no-fund \
+ && npm cache clean --force
 
-COPY --from=builder --chown=app:app /app/node_modules ./node_modules
-COPY --from=builder --chown=app:app /app/dist ./dist
-COPY --chown=app:app package.json ./
+# Pre-built JS from the host (tsc output)
+COPY dist ./dist
 
+RUN addgroup -S app && adduser -S app -G app && chown -R app:app /app
 USER app
+
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \

@@ -31,47 +31,62 @@ Guiding principles, in priority order:
 
 ## 2. High-level topology
 
+Two-tier routing: the system Nginx terminates TLS and maps each subdomain to a different `127.0.0.1` port; a per-site Nginx container at that port serves the static `dist/` AND proxies `/api/*` to the shared backend. All inter-container traffic stays on an internal Docker network.
+
 ```
                               Internet
                                  │
                                  ▼
-                      ┌──────────────────────┐
-                      │  /opt/infra/proxy    │
-                      │  System Nginx (TLS)  │  ← Let's Encrypt
-                      │  Ports 80 / 443      │
-                      └──────────┬───────────┘
-                                 │
-            ┌────────────────────┼────────────────────────────┐
-            │                    │                            │
-   ┌────────▼──────────┐  ┌──────▼─────────┐         ┌────────▼─────────┐
-   │ vhost: domain-A   │  │ vhost: domain-B│   ...   │ vhost: domain-N  │
-   │  /api/* → api     │  │  /api/* → api  │         │  /api/* → api    │
-   │  /     → static-A │  │  /     → static│         │  /     → static-N│
-   └────────┬──────────┘  └──────┬─────────┘         └────────┬─────────┘
-            │                    │                            │
-   ┌────────▼──────────────────▼─────────────────────────────▼──────────┐
-   │           /opt/infra/apps/store-front/ (compose stack)             │
-   │                                                                    │
-   │   ┌──────────────┐  ┌──────────────┐  ...  ┌──────────────────┐   │
-   │   │ static-A     │  │ static-B     │       │ api (Fastify)    │   │
-   │   │ nginx:alpine │  │ nginx:alpine │       │ Node 20 + TS     │   │
-   │   │ serves       │  │ serves       │       │ stateless        │   │
-   │   │ dist/        │  │ dist/        │       │ port 3000        │   │
-   │   └──────────────┘  └──────────────┘       └──────┬───────────┘   │
-   │                                                    │              │
-   │   External network: proxy                          │              │
-   └────────────────────────────────────────────────────┼──────────────┘
-                                                        │
-            ┌───────────────────┬───────────────────────┼────────────────┐
-            │                   │                       │                │
-       ┌────▼────┐         ┌────▼──────┐          ┌─────▼─────┐    ┌─────▼─────┐
-       │ AWS S3  │         │ OpenAI    │          │ SMTP      │    │ Geocoder  │
-       │ uploads │         │ (gpt-4o-  │          │ (provider │    │ (Mapbox / │
-       │ + PDFs  │         │  mini)    │          │  TBD)     │    │  Google)  │
-       └─────────┘         └───────────┘          └───────────┘    └───────────┘
+                      ┌──────────────────────────────┐
+                      │  /opt/infra/proxy/ (system)  │
+                      │  Nginx + *.marin.cr cert     │  ← wildcard Let's Encrypt
+                      │  Ports 80 / 443              │
+                      └──────────────┬───────────────┘
+                                     │
+                     map $host $store_front_port:
+                       raul1.dev.marin.cr → 8324
+                       raul2.dev.marin.cr → 8325
+                       (more sites = more lines)
+                                     │
+                       proxy_pass http://127.0.0.1:$store_front_port
+                                     │
+              ┌──────────────────────┴────────────────────────┐
+              │                                               │
+   ┌──────────▼────────────┐                       ┌──────────▼────────────┐
+   │ store-front-raul1     │                       │ store-front-raul2     │
+   │ nginx:alpine          │                       │ nginx:alpine          │
+   │ host port :8324       │                       │ host port :8325       │
+   │  /api/* → api         │                       │  /api/* → api         │
+   │  /     → dist (HI)    │                       │  /     → dist (PW)    │
+   └──────────┬────────────┘                       └──────────┬────────────┘
+              │                                               │
+              └─────────────────────┬─────────────────────────┘
+                                    │
+                       internal docker network:
+                            store-front-net
+                                    │
+                       ┌────────────▼───────────┐
+                       │ store-front-api        │
+                       │ Fastify Node 20        │
+                       │ :3000 (internal only)  │
+                       │ stateless              │
+                       └────┬───────────────────┘
+                            │
+            ┌───────────────┼──────────────┬───────────────┐
+            │               │              │               │
+       ┌────▼────┐     ┌────▼──────┐  ┌────▼─────┐    ┌────▼─────┐
+       │ AWS S3  │     │ OpenAI    │  │ SMTP     │    │ Geocoder │
+       │ uploads │     │ (gpt-4o-  │  │ (TBD)    │    │ (Mapbox /│
+       │ + PDFs  │     │  mini)    │  │          │    │  Google) │
+       └─────────┘     └───────────┘  └──────────┘    └──────────┘
 ```
 
-Inbound traffic terminates TLS at the system Nginx (already configured on the VPS). Nginx routes by hostname → one vhost per business domain. Within each vhost, `/api/*` is reverse-proxied to the `api` container; everything else is served by that domain's static container.
+The system Nginx terminates TLS using the existing `*.marin.cr` wildcard certificate at `/opt/infra/proxy/letsencrypt/live/marin.cr/`. New subdomains under `*.marin.cr` need no new certbot run — just a line in the `map` block and a port-bound container. The store-front Docker stack joins **no external network**; the only ingress is via the per-site host-port bindings.
+
+Why two tiers rather than letting the system Nginx route `/api/*` directly:
+- A single shared file (`deploy/site.nginx.conf`) defines per-site routing rules; adding a business is `map` + new container, no system-Nginx rewrite per route.
+- The api container has zero host-port exposure — only the per-site routers can reach it.
+- Each container's responsibility is narrow: TLS at the edge, hostname mapping next, then path splitting, then the backend itself.
 
 ---
 
@@ -127,8 +142,8 @@ store-front/
 │
 └── deploy/
     ├── compose.yml               Production Docker Compose stack
-    ├── nginx-site.conf.template  Per-site static-serving config (inside containers)
-    ├── proxy-vhost.template.conf Template for /opt/infra/proxy/nginx/conf.d/
+    ├── site.nginx.conf           Per-site internal nginx (static dist + /api/ proxy)
+    ├── raul-sites.conf           Host-level nginx vhost — installed to /opt/infra/proxy/nginx/conf.d/
     ├── .env.example              Template for the real .env on the VPS
     ├── sites.config.example.json Template for the real sites.config.json on the VPS
     └── README.md                 Deploy steps + "add a new site" recipe
@@ -174,10 +189,10 @@ Beyond the repo, the new business must also be added to:
 
 | Where | What |
 |---|---|
-| `deploy/compose.yml` | A `static-<business>` service mirroring the existing ones |
+| `deploy/compose.yml` | A service block mirroring `raul1` — bound to a fresh `127.0.0.1:<port>:80`, same `site.nginx.conf`, mount the new site's `dist/` |
 | `deploy/sites.config.json` on the VPS | Entry keyed by the new domain — owner email, phone, chat system prompt, pricing rules, service area, PDF theme |
-| `/opt/infra/proxy/nginx/conf.d/<domain>.conf` | New vhost copied from `deploy/proxy-vhost.template.conf` |
-| Let's Encrypt | Run certbot for the new domain |
+| `deploy/raul-sites.conf` | Add a line to the `map` block + append the host to both `server_name` directives |
+| Let's Encrypt | Only if the new domain is **outside** `*.marin.cr`. Subdomains of `marin.cr` are already covered by the wildcard cert. |
 
 Step-by-step recipe lives in §7.
 
@@ -207,7 +222,7 @@ Cross-cutting:
 
 ```jsonc
 {
-  "myhomeimprovementcompany.com": {
+  "raul1.dev.marin.cr": {
     "brandName": "Acme Home Improvement",
     "ownerEmail": "owner@acmehi.com",
     "phone": "+1-555-0100",
@@ -217,7 +232,7 @@ Cross-cutting:
       "deck-rebuild":    { "base": 400, "perSqft": 18,   "currency": "USD" }
     },
     "serviceArea": { "type": "radius", "centerLat": 9.93, "centerLng": -84.08, "radiusKm": 40 },
-    "pdfTheme":    { "primary": "#1d4ed8", "logoS3Key": "branding/myhomeimprovementcompany.com/logo.png" }
+    "pdfTheme":    { "primary": "#1d4ed8", "logoS3Key": "branding/raul1.dev.marin.cr/logo.png" }
   }
 }
 ```
@@ -226,29 +241,34 @@ Cross-cutting:
 
 ## 7. Adding a new business (recipe)
 
-Estimated time: **~15 minutes** once you have copy and images ready.
+Estimated time: **~10 minutes** under `*.marin.cr` (no new TLS cert needed). ~15 min under a brand-new root domain with cert issuance.
 
-1. **Copy a site** as a starting point:
+1. **Pick a free 832x port.** Current allocations: 8324 (raul1), 8325 (raul2). Keep the convention.
+2. **Copy a site** as a starting point:
    ```bash
    cp -r sites/home-improvement sites/<new-business>
    ```
-2. **Edit `src/content/*.json`** — brand name, phone, services, reviews, FAQ, process. Replace every "Acme" string.
-3. **Edit `src/styles/theme.css`** — set `--color-primary`, `--color-accent`, optional `--font-display`.
-4. **Replace `public/images/`** — hero, before/after, crew, og:image. Update `favicon.svg`.
-5. **Update `astro.config.mjs`** — set the `site` to the production URL.
-6. **Update `package.json`** — change the package `name`.
-7. **Add a service block to `deploy/compose.yml`** mirroring an existing `static-*` service.
-8. **Add a vhost** to the system Nginx: copy `deploy/proxy-vhost.template.conf` into `/opt/infra/proxy/nginx/conf.d/<domain>.conf`, substitute domain and upstream container name.
-9. **Run certbot** on the VPS for the new domain.
+3. **Edit `src/content/*.json`** — brand name, phone, services, reviews, FAQ, process. Replace every "Acme" string.
+4. **Edit `src/styles/theme.css`** — set `--color-primary`, `--color-accent`, optional `--font-display`.
+5. **Replace `public/images/`** — hero, before/after, crew, og:image. Update `favicon.svg`.
+6. **Update `astro.config.mjs`** — set `site` to the production URL.
+7. **Update `package.json`** — change the package `name` and dev port.
+8. **Add a service block to `deploy/compose.yml`** mirroring `raul1`: unique `container_name`, `127.0.0.1:<new-port>:80`, mount the new site's `dist/`, reuse `./site.nginx.conf`.
+9. **Edit `deploy/raul-sites.conf`** — add a line to the `map $host $store_front_port` block and append the new host to both `server_name` directives.
 10. **Add the domain entry** to `deploy/sites.config.json` on the VPS (owner email, chat system prompt, pricing rules, service area, PDF theme).
-11. **Deploy**:
+11. **Update `ALLOWED_ORIGINS`** in `deploy/.env` to include `https://<newdomain>`.
+12. **Point DNS** for the new subdomain at the VPS.
+13. **Deploy**:
     ```bash
     cd /opt/infra/apps/store-front
-    git pull
-    docker compose up -d --build
-    docker exec proxy nginx -s reload
+    git pull && pnpm install && pnpm -r build
+    cd deploy && docker compose up -d --build
+    sudo cp deploy/raul-sites.conf /opt/infra/proxy/nginx/conf.d/raul-sites.conf
+    docker exec proxy nginx -t && docker exec proxy nginx -s reload
     ```
-12. **Smoke test** — load HTTPS, submit a test quote, confirm email + PDF arrive.
+14. **Smoke test** — load HTTPS, submit a test quote, confirm email + PDF arrive, check S3.
+
+If the new business is **not** under `*.marin.cr`, also issue a cert for it before step 13 — either DNS-challenge (`certbot certonly --dns-route53 -d <domain>`) or HTTP-challenge via `/opt/infra/proxy/webroot/` — and adjust `ssl_certificate*` paths in `raul-sites.conf` (or move that domain to its own vhost file).
 
 ---
 
@@ -282,21 +302,23 @@ Hard rules:
 
 ```bash
 git pull
-docker compose up -d --build              # rebuild changed images, restart
-docker compose logs -f api                # tail backend logs
-docker compose logs -f static-home-improvement
-docker compose ps                         # see container status
+docker compose -f deploy/compose.yml up -d --build  # rebuild + restart
+docker compose -f deploy/compose.yml logs -f api    # tail backend logs
+docker compose -f deploy/compose.yml logs -f raul1  # tail per-site nginx logs
+docker compose -f deploy/compose.yml ps             # container status
 ```
 
-**System Nginx** (`/opt/infra/proxy/`):
+If `deploy/raul-sites.conf` changed in this pull, install it and reload the system Nginx:
 ```bash
-docker exec proxy nginx -t                 # validate config
-docker exec proxy nginx -s reload          # apply changes after editing a vhost
+sudo cp deploy/raul-sites.conf /opt/infra/proxy/nginx/conf.d/raul-sites.conf
+docker exec proxy nginx -t                  # validate
+docker exec proxy nginx -s reload           # apply
 ```
 
 **TLS** (already automated):
-- Renewal runs via cron on the host.
-- For a new domain: `certbot certonly --webroot -w /opt/infra/proxy/webroot/ -d <domain>` then add the vhost.
+- Wildcard `*.marin.cr` cert at `/opt/infra/proxy/letsencrypt/live/marin.cr/`. Renewal runs via the certbot systemd timer (DNS challenge).
+- **New `*.marin.cr` subdomains need NO new certbot run** — wildcard covers them automatically.
+- For a brand-new domain outside `*.marin.cr`: issue a per-domain cert (preferably DNS-challenge: `certbot certonly --dns-route53 -d <domain>`, or webroot HTTP-challenge via `/opt/infra/proxy/webroot/`) and update `ssl_certificate*` paths.
 
 **Rolling back**:
 ```bash
@@ -321,7 +343,7 @@ The api container loads **all** secrets from `/opt/infra/apps/store-front/deploy
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET` | S3 access | Restrict IAM to the bucket and to `s3:PutObject`, `s3:GetObject`, `s3:HeadObject` |
 | `GEOCODE_PROVIDER` | Address validation | `mapbox` \| `google` \| `smarty` |
 | `GEOCODE_API_KEY` | Provider auth | Per-provider |
-| `ALLOWED_ORIGINS` | CORS allowlist | Comma-separated: `https://myhomeimprovementcompany.com,https://mypressurewashingcompany.com` |
+| `ALLOWED_ORIGINS` | CORS allowlist | Comma-separated: `https://raul1.dev.marin.cr,https://raul2.dev.marin.cr` |
 | `SITES_CONFIG` | Path inside the container | Default `/app/sites.config.json` (bind-mounted from `deploy/sites.config.json`) |
 | `MAX_UPLOAD_MB` | Per-file upload cap | e.g. `15` |
 | `MAX_FILES_PER_QUOTE` | Per-quote file count cap | e.g. `8` |

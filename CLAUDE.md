@@ -4,7 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Always read this first
 
-[**`ARCHITECTURE.md`**](./ARCHITECTURE.md) at the repo root is the canonical reference: topology, repo map, design decisions, per-site contract, backend route contracts, deployment, secrets, and recipes for adding a new business or a new backend feature. Read it before changing structure, adding a new site, or extending the backend — and update it in the same commit when topology or contracts change.
+[**`ARCHITECTURE.md`**](./ARCHITECTURE.md) — canonical reference for topology, repo map, design decisions, per-site contracts, backend routes, secrets, and the recipes for adding a new business or backend feature. Read it before changing structure or contracts; update it in the same commit when topology changes.
+
+[**`DEV.md`**](./DEV.md) — concrete dev environment reference: SSL/wildcard cert, host nginx wildcard config, current sites & ports, Docker stack layout, env vars, common operations, troubleshooting. Read it when you need to know **how** something runs on this VPS rather than **why** it's designed that way.
+
+## Making a site available
+
+When the user asks to "make a site available", "start raul1", "bring up the pressure washing site", "deploy raul2", or anything else that means "this site should be reachable at its public URL", **run the corresponding script**. The scripts are idempotent (safe to re-run) and handle the full path: build → docker compose up → host nginx map update + reload → smoke test.
+
+| User says | Run |
+|---|---|
+| anything about **raul1** / home improvement | `./scripts/start-raul1.sh` |
+| anything about **raul2** / pressure washing | `./scripts/start-raul2.sh` |
+| "bring up everything" / "make both sites available" | both scripts in sequence |
+
+After the script finishes, the site is at `https://raul1.dev.marin.cr/` or `https://raul2.dev.marin.cr/` respectively. Don't manually run `docker compose`, `pnpm build`, or edit the host nginx map — the scripts already do it correctly and idempotently. See `DEV.md` for what each script does internally.
+
+To stop everything: `docker compose -f deploy/compose.yml down`. To tail logs: `docker compose -f deploy/compose.yml logs -f api raul1 raul2`.
 
 ## Repo shape (one-line summary)
 
